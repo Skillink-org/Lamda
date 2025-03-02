@@ -1,0 +1,15 @@
+@use "../../styles/vars" as vars;
+
+.avatarIcon {
+  width: var(--size);
+  height: var(--size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: vars.$primary-blue;
+  color: vars.$gold;
+  font-weight: vars.$font-weight-medium;
+  font-size: calc(var(--size) / 2.5);
+  text-transform: uppercase;
+}
