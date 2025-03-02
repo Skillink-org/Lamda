@@ -1,0 +1,11 @@
+@use '../styles/vars';
+@use '../styles/mixins';
+
+// Global app styles
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  direction: rtl;
+  box-sizing: border-box;
+}
