@@ -7,7 +7,7 @@ import logo from "../../assets/logo_book.png"; // Assuming you have a logo file
 
 const Header = () => {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
     const [user, setUser] = useState({ "firstName": "sara", "lastName": "cohen" });
 
     useEffect(() => {
