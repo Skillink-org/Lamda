@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import styles from "./Header.module.scss";
 import AvatarIcon from "../AvatarIcon/AvatarIcon";
@@ -6,6 +6,18 @@ import logo from "../../assets/logo_book.png"; // Assuming you have a logo file
 
 
 const Header = () => {
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState({ "firstName": "sara", "lastName": "cohen" });
+
+    useEffect(() => {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+            setIsLoggedIn(true);
+            setUser(JSON.parse(userData));
+        }
+    }, []);
+
     return (
         <nav className={styles.navbar}>
             <div className={styles.navContainer}>
@@ -26,13 +38,18 @@ const Header = () => {
                     <li>
                         <NavLink to="/contact" className={({ isActive }) => (isActive ? styles.active : "")}>יצירת קשר</NavLink>
                     </li>
-                </ul>{
-                    
-                }
-                <NavLink to="/profile">
-                    <AvatarIcon firstName="sara" lastName="cohen" size={40}></AvatarIcon>
-                </NavLink>
-                {/* generic button */}
+                </ul>
+                {isLoggedIn ? (
+                    <NavLink to="/profile">
+                        <AvatarIcon firstName={user.firstName} lastName={user.lastName} size={40} />
+                    </NavLink>
+                ) : (
+                    <NavLink to="/login">
+                        {/* generic button */}
+                        <button>התחברות / הרשמה</button>
+                    </NavLink>
+                )}
+
             </div>
         </nav>
     );
