@@ -6,9 +6,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background-color: vars.$primary-blue;
-  color: vars.$gold;
+  border-radius: vars.$border-radius-full;
+  background-color: vars.$gold;
+  color: vars.$primary-blue;
   font-weight: vars.$font-weight-medium;
   font-size: calc(var(--size) / 2.5);
   text-transform: uppercase;
