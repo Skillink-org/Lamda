@@ -1,5 +1,5 @@
-// צביה פיירמן 
-// מודל תשובה
+// Tzivya Fireman
+// answer model
 const mongoose = require('mongoose');
 
 const AnswerSchema = new mongoose.Schema({
