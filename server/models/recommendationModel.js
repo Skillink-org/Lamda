@@ -6,8 +6,8 @@ const RecommendationSchema = new mongoose.Schema({
   testCode: { type: String, ref: 'Test', required: true },
   personalityString: { type: String, required: true },
   title: { type: String, required: true },
-  general: { type: String },
-  recommendations: [{ type: String }],
+  general: { type: String, default: '',},
+  recommendations: [{ type: String , default: []}],
 });
 
 const Recommendation = mongoose.model('Recommendation', RecommendationSchema);
