@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "sass": "^1.85.1"
   },
   "devDependencies": {
@@ -23,6 +25,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "sass-embedded": "^1.85.1",
     "vite": "^6.2.0"
   }
 }

@@ -1,0 +1,45 @@
+/**
+ * @file GenericButton.module.scss
+ * @author Shira Stern
+ * @description סגנונות עבור רכיב הכפתור הגנרי, כולל תמיכה באייקונים ומצבי עיצוב שונים.
+ */
+
+
+
+@import "../../styles/mixins";
+
+.button {
+  @include button-base;
+}
+
+.button .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+
+.primary {
+  @include primary-button;
+}
+
+.secondary {
+  @include secondary-button;
+}
+
+
+.outline {
+  background-color: transparent;
+  border: 2px solid $primary-blue;
+  color: $primary-blue;
+}
+
+.danger {
+  background-color: #ff4d4f;
+  color: white;
+  border: 2px solid darkred;
+
+  &:hover {
+    background-color: darkred;
+  }
+}
