@@ -1,15 +1,15 @@
 import './App.scss'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import {TestPage} from "./pages/TestPage";
+import Routing from './routes/route'
+import Header from './components/Header/Header';
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
 
   return (
     <Router>
-    <Routes>
-      <Route path="/:developerName" element={<TestPage />} />
-    </Routes>
-  </Router>
+      <Header />
+      {/* <Routing /> */}
+    </Router>
   )
 }
 
