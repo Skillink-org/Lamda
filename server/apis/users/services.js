@@ -11,4 +11,19 @@ const registerUser = async (firstName, lastName, email, password) => {
   return await createUser({ firstName, lastName, email, password: hashedPassword });
 };
 
-module.exports = { registerUser };
+const loginUser = async (email, password) => {
+  const user = await findUserByEmail(email);
+
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    throw new Error("Invalid credentials");
+  }
+
+  const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  return token;
+};
+
+const verifyToken = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET);
+};
+
+module.exports = { registerUser, loginUser, verifyToken };

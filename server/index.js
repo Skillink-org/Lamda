@@ -3,10 +3,13 @@ const app = express();
 const cors = require('cors');
 const fs = require('fs');
 const yaml = require('js-yaml');
+const cookieParser = require("cookie-parser");
+
 require('dotenv').config();
 const connectDB = require('./common/db')
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser()); 
 
 const userRoutes = require('./apis/users/routes');
 
