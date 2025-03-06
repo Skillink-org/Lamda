@@ -1,5 +1,5 @@
 //user model
-import mongoose from "mongoose";
+const {mongoose} = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
@@ -11,4 +11,5 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model("User", userSchema);
-export default User;
+
+module.exports = { User };
