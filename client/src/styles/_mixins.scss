@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+@use './vars' as *;
+
+=======
 @use "./vars" as vars;
+>>>>>>> 8aba971ffb3b3cd41f1b39c0625588b7645cce3d
 // מיקסין לבורדר סטנדרטי
 @mixin classic-border {
     border: 2px solid $gold;
@@ -112,7 +117,7 @@
   
   // מיקסין לכותרות
   @mixin heading-1 {
-    font-size: $font-size-4xl;
+    font-size:$font-size-4xl;
     font-weight: $font-weight-bold;
     line-height: $line-height-tight;
     color: $primary-blue;
@@ -152,7 +157,7 @@
   
   // מיקסין לכרטיסיות
   @mixin card {
-    background-color: $white;
+    background-color:$white;
     border-radius: $border-radius-lg;
     @include classic-border;
     padding: 1.5rem;

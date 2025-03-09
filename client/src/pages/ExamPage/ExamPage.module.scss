@@ -1,0 +1,104 @@
+@use '../../styles/mixins' as mixins;
+@use '../../styles/vars' as vars;
+
+.examCard{
+    @include mixins.card;
+    margin:20px;
+  }
+
+  .answerCard {
+    @include mixins.card;
+    //background-color:vars.$light-blue;צבע הרקע במצב בחירה
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    margin:20px;
+    font-weight: vars.$font-weight-medium;
+    color: vars.$primary-blue-light;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-out, transform 0.2s ease; // כולל גם שינוי בקנה מידה
+    //@include mixins.transition();
+    @include mixins.classic-border;
+    
+    &:focus {
+      @include mixins.focus-ring;
+    }
+    &:hover {
+      box-shadow: 0px 4px 10px rgba(125, 124, 124, 0.0);// הצל נכנס חזרה
+      transform: translateY(-3px);
+    }
+  }
+  // כאשר התשובה נבחרה
+  .selected {
+    background-color: vars.$light-blue; // צבע הרקע
+    border: 2px solid vars.$primary-blue;// שינוי צבע הטקסט
+    box-shadow: none;
+}
+
+.radioCustom {
+  display: inline-block;
+  width: 20px; // גודל הכפתור
+  height: 20px; // גובה הכפתור
+  border: 2px solid vars.$gold; // צבע הגבול
+  border-radius: 50%; // הופך את הכפתור לעגלגל
+  position: relative;
+}
+input[type="radio"] {
+  display: none; // הסתרת כפתורי הבחירה המקוריים
+}
+
+input[type="radio"]:checked + .radioCustom {
+  background-color: vars.$light-blue;// צבע הרקע כאשר נבחר
+}
+input[type="radio"]:checked + .answerCard {
+  background-color: vars.$light-blue-dark;
+}
+.radioCustom:after {
+  content: '';
+  display: none;
+  width: 10px; // גודל הנקודה הפנימית
+  height: 10px; // גובה הנקודה הפנימית
+  background-color: white; // צבע הנקודה הפנימית
+  border-radius: 50%; // הופך את הנקודה לעגלגלית
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); // מרכז את הנקודה
+}
+
+input[type="radio"]:checked + .radioCustom:after {
+  display: block; // מראה את הנקודה כאשר הכפתור נבחר
+}
+
+  .h1{
+    @include mixins.heading-3;
+
+    @include mixins.decorative-underline;
+    &:after {
+      width: 100px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+    
+  }
+  .buttonBar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+  }
+  .primaryButton{
+    @include mixins.primary-button;
+   // margin: 30px;
+  }
+  .secondaryButton{
+    @include mixins.secondary-button;
+   // margin: 30px;
+  }
+  .line{
+    @include mixins.decorative-underline;
+  }
+  .progress{
+    margin:20px;
+    @include mixins.progress-bar
+  }
