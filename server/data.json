@@ -1,0 +1,21 @@
+[
+  {
+    "name": "MBTI",
+    "code": "mbti",
+    "description": "מבחן אישיות",
+    "isActive": true,
+    "categoryOrder": [
+      "EI",
+      "SN",
+      "TF",
+      "JP"
+    ],
+    "duration": 30,
+    "scoreCalculationMethod": "average"
+  },
+  {
+    "name": "",
+    "code": "",
+    "status": true
+  }
+]
