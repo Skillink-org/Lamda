@@ -1,4 +1,4 @@
-@import "./vars";
+@use "./vars";
 // מיקסין לבורדר סטנדרטי
 @mixin classic-border {
     border: 2px solid $gold;
