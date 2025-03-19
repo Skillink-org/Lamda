@@ -8,7 +8,7 @@ const connectDB = require('./common/db')
 app.use(cors());
 app.use(express.json());
 
-const userRoutes = require('./apis/users/routes');
+const userRoutes = require('./apis/users/userRoutes');
 
 const config = yaml.load(fs.readFileSync('./config/config.yaml', 'utf8'));
 const port = config.server.port;
