@@ -1,46 +1,62 @@
 /**
  * @file GenericButton.jsx
  * @author Shira Stern
- * @description רכיב כפתור גנרי עם תמיכה באייקונים, טעינה ומצבי עיצוב שונים.
+ * @description A generic button component with support for icons, loading, and various design states.
  */
 
 import React from "react";
-import styles from "./GenericButton.module.scss";
 import PropTypes from "prop-types";
+import clsx from "clsx";
+import styles from "./GenericButton.module.scss";
+
+const Icon = ({ icon }) => <span className={styles.icon}>{icon}</span>;
 
 const Button = ({
-  children,
-  variant = "primary",
-  disabled = false,
-  loading = false,
-  className = "",
-  onClick,
-  type = "button",
-  as = "button",
+  as, // button,link
+  type, // button, submit, reset
   icon,
-  iconPosition = "left",
+  loading,
+  variant,
+  children,
+  disabled,
+  className,
+  iconPosition,
+  onClick = () => {},
   ...props
 }) => {
   const Tag = as === "link" ? "a" : "button";
 
   return (
     <Tag
-      className={`${styles.button} ${styles[variant]} ${styles[className] || className} ${disabled ? styles.disabled : ""}`}
-
+      className={clsx(styles.button, styles[variant], className, {
+        [styles.disabled]: disabled || loading,
+      })}
       disabled={disabled || loading}
       onClick={!disabled && !loading ? onClick : undefined}
-      type={as === "link" ? undefined : type}
+      {...(as !== "link" && { type })}
       {...props}
     >
-      {loading ? "Loading..." : (
+      {loading ? (
+        <span>Loading...</span>
+      ) : (
         <>
-          {icon && iconPosition === "right" && <span className={styles.icon}>{icon}</span>}
+          {icon && iconPosition === "right" && <Icon icon={icon} />}
           <span>{children}</span>
-          {icon && iconPosition === "left" && <span className={styles.icon}>{icon}</span>}
+          {icon && iconPosition === "left" && <Icon icon={icon} />}
         </>
       )}
     </Tag>
   );
+};
+
+Button.defaultProps = {
+  variant: "primary",
+  as: "button",
+  type: "button",
+  iconPosition: "left",
+  disabled: false,
+  loading: false,
+  className: "",
 };
 
 Button.propTypes = {
@@ -58,40 +74,39 @@ Button.propTypes = {
 
 export default Button;
 
+// /*
+//   Usage examples:
 
-/*
-  דוגמאות שימוש:
+//   1. כפתור ראשי:
+//      <Button variant="primary" onClick={() => alert("Clicked!")}>
+//        התחיל את המבחן
+//      </Button>
 
-  1. כפתור ראשי:
-     <Button variant="primary" onClick={() => alert("Clicked!")}>
-       התחיל את המבחן
-     </Button>
+//   2. כפתור משני עם אייקון בצד שמאל:
+//      <Button variant="secondary" icon={<FaChevronLeft />} iconPosition="left">
+//        הבא
+//      </Button>
 
-  2. כפתור משני עם אייקון בצד שמאל:
-     <Button variant="secondary" icon={<FaChevronLeft />} iconPosition="left">
-       הבא
-     </Button>
+//   3. כפתור משני עם אייקון בצד ימין:
+//      <Button variant="secondary" icon={<FaChevronRight />} iconPosition="right">
+//        חזור
+//      </Button>
 
-  3. כפתור משני עם אייקון בצד ימין:
-     <Button variant="secondary" icon={<FaChevronRight />} iconPosition="right">
-       חזור
-     </Button>
+//   4. כפתור מסוכן (אדום) מבוטל:
+//      <Button variant="danger" disabled>
+//        כפתור מבוטל
+//      </Button>
 
-  4. כפתור מסוכן (אדום) מבוטל:
-     <Button variant="danger" disabled>
-       כפתור מבוטל
-     </Button>
+//   5. כפתור Outline במצב טעינה:
+//      <Button variant="outline" loading>
+//        טוען...
+//      </Button>
 
-  5. כפתור Outline במצב טעינה:
-     <Button variant="outline" loading>
-       טוען...
-     </Button>
+//   6. כפתור כקישור:
+//      <Button as="link" href="https://example.com" target="_blank">
+//        עבור לאתר
+//      </Button>
 
-  6. כפתור כקישור:
-     <Button as="link" href="https://example.com" target="_blank">
-       עבור לאתר
-     </Button>
-
-  7. כפתור מותאם אישית עם מחלקה נוספת:
-     <Button className="my-custom-button">לחצן מותאם אישית</Button>
-*/
+//   7. כפתור מותאם אישית עם מחלקה נוספת:
+//      <Button className="my-custom-button">לחצן מותאם אישית</Button>
+// */
