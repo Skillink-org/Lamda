@@ -1,0 +1,48 @@
+@use "../../styles/vars" as *;
+@use "../../styles/mixins" as *;
+
+.main-content{
+    padding: 1rem;
+    margin:auto;
+    max-width: 100%;
+    background-color: $light-blue;
+    background-image: linear-gradient(to bottom, $light-blue, #fff);
+    display: flex;
+    align-items: center;
+  
+  }
+  .instructions-page {
+      text-align: center;
+      width: 100%;
+      direction: rtl;
+      display: grid;
+      margin: 0;
+      padding: 7%;
+  }
+.instructions-card {
+    @include card;
+    max-width: 100%;
+    text-align: center;
+  
+}
+
+h2 {
+    @include heading-2;
+    margin-bottom: 0.5rem;
+    @include decorative-underline;
+}
+
+.mission-vision-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2%;
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 2%; /* רווח תחתון בין האלמנטים */
+  
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1.5%; /* השאר רווח בין האלמנטים גם במובייל */
+      margin-bottom: 4%; /* השאר רווח תחתון באותו גודל */
+    }
+  }
