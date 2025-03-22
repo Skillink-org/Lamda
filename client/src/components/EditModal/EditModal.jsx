@@ -1,23 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import styles from "./EditModal.module.scss";
 
-const EditModal = ({ isOpen, onClose, title, fields, onSave }) => {
-  const initialFormState = fields.reduce((acc, field) => {
+
+const initializeFormState = (fields) => {
+  return fields.reduce((acc, field) => {
     acc[field.name] = "";
     return acc;
   }, {});
+};
+
+const EditModal = ({ isOpen, onClose, title, fields, onSave }) => {
+
+  const [formData, setFormData] = useState(() => initializeFormState(fields));
+
+  useEffect(() => {
+    if (isOpen && Array.isArray(fields)) {
+      setFormData(initializeFormState(fields));
+    }
+  }, [isOpen, fields]);
 
 
-  const [formData, setFormData] = useState({});
+
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = () => {
-    onSave(formData);
-    setFormData(initialFormState);
+    // filter empty fields
+    const updatedData = Object.fromEntries(
+      Object.entries(formData).filter(([, value]) => value.trim() !== "")
+    );
+
+    if (Object.keys(updatedData).length === 0) {
+      alert("לא ניתן לשמור ללא ערכים מעודכנים.");
+      return;
+    }
+
+    onSave(updatedData);
+    setFormData(initializeFormState);
     onClose();
   };
 
@@ -30,8 +55,9 @@ const EditModal = ({ isOpen, onClose, title, fields, onSave }) => {
         <form>
           {fields.map((field) => (
             <div key={field.name} className={styles.formGroup}>
-              <label>{field.label}</label>
+              <label htmlFor={field.name}>{field.label}</label>
               <input
+                id={field.name}
                 type={field.type || "text"}
                 name={field.name}
                 value={formData[field.name] || ""}
@@ -41,7 +67,7 @@ const EditModal = ({ isOpen, onClose, title, fields, onSave }) => {
           ))}
         </form>
         <div className={styles.buttonGroup}>
-          <button onClick={handleSubmit} className={styles.saveButton}>שמור</button>
+          <button type="submit" onClick={handleSubmit} className={styles.saveButton}>שמור</button>
           <button onClick={onClose} className={styles.cancelButton}>ביטול</button>
         </div>
       </div>
