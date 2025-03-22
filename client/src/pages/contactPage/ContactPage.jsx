@@ -44,6 +44,7 @@ const ContactPage = () => {
         throw new Error(result.message || "שגיאה בשליחת הטופס");
       }
     } catch (error) {
+      console.log(error);
       setStatusType("error");
       setStatusMessage(error.message);
     }
@@ -51,46 +52,52 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="contactPageContainer">
-      <h2 className="title">טופס יצירת קשר</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="contactFormContainer">
-        <div>
-          <Input placeholder="שם מלא" {...register("fullName")} />
-          {errors.fullName && <p className="text-red-500">{errors.fullName.message}</p>}
-        </div>
-        <div>
-          <Input type="email" placeholder="אימייל" {...register("email")} />
-          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-        </div>
-        <div>
-          <Input placeholder="נושא הפנייה" {...register("subject")} />
-          {errors.subject && <p className="text-red-500">{errors.subject.message}</p>}
-        </div>
-        <div>
-          <Textarea placeholder="תוכן הפנייה" {...register("message")} />
-          {errors.message && <p className="text-red-500">{errors.message.message}</p>}
-        </div>
-        <div className="submitButtonContainer">
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading ? <Loader2 className="animate-spin" /> : "שלח"}
-          </Button>
-        </div>
-      </form>
+<div className="contactPageContainer">
+              {console.log("enter to contract page")}
+                      <h2 className="title">טופס יצירת קשר</h2>
+                      <form onSubmit={handleSubmit(onSubmit)} className="contactFormContainer">
+                      <div className='fullNameContainer'>
+                          <input placeholder="שם מלא" {...register("fullName")} className='fullNameInput'/>
+                          {errors.fullName && <p className="text-red-500">{errors.fullName.message}</p>}
+                        </div>
+                        <div className='emailContainer'>
+                          <input type="email" placeholder="אימייל" {...register("email")} className='emailInput'/>
+                          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+                        </div>
+                        <div className='contentSubjectContainer'>
+                          <input placeholder="נושא הפנייה" {...register("subject")} className='contentSubjectInput'/>
+                          {errors.subject && <p className="text-red-500">{errors.subject.message}</p>}
+                        </div>
+                        <div className='contentContextContainer'>
+                          <textarea placeholder="תוכן הפנייה" {...register("message")} className='contentContextArea'/>
+                          {errors.message && <p className="text-red-500">{errors.message.message}</p>}
+                        </div>
+                        <div className="submitBtnContainer">
+                          <button type="submit" disabled={loading} className="sendBtn">
+                            {loading ? <Loader2 className="animate-spin" /> : "שלח"}
+                          </button>
+                        </div>
+                      </form>
+                        
+                      
+                      
+                        
+                        
+                    
+                
+                      {statusMessage && (
+                        <p className={`mt-4 ${statusType === "success" ? "text-green-600" : "text-red-600"}`}>
+                          {statusMessage}
+                        </p>
+                      )}
 
-      {statusMessage && (
-        <p className={`mt-4 ${statusType === "success" ? "text-green-600" : "text-red-600"}`}>
-          {statusMessage}
-        </p>
-      )}
-
-      <Card className="viewDetailes">
-        <CardContent>
-          <h3 className="text-lg font-semibold">יצירת קשר ישירה</h3>
-          <p>📞 טלפון: 03-1234567</p>
-          <p>📧 אימייל: contact@example.com</p>
-        </CardContent>
-      </Card>
-    </div>
+                      {/* <div className="viewDetailes">
+                          <h3 className="text-lg font-semibold">יצירת קשר ישירה</h3>
+                          <p>📞 טלפון: 03-1234567</p>
+                          <p>📧 אימייל: contact@example.com</p>
+                        </CardContent>
+                      </div>  */}
+      </div>
   );
 };
 
