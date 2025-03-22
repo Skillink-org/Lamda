@@ -3,7 +3,7 @@ import EditModal from "../EditModal/EditModal";
 
 const UserProfile = () => {
   const [isModalOpen, setModalOpen] = useState(false);
-
+// לשאוב מטבלת משתמשים
   const userFields = [
     { name: "firstName", label: "שם פרטי" },
     { name: "lastName", label: "שם משפחה" },
