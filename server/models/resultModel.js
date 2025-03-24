@@ -1,18 +1,18 @@
 // Tzivya Fireman
 // result model
 const mongoose = require('mongoose');
-const AnswerSchema = require('./answerModel').schema;
-const CategoryResultSchema = require('./categoryResultModel').schema;
 
 const ResultSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },//Will need to match exactly the name of the user schema
-  testCode: { type: String, ref: 'Test', required: true },
-  answers: [AnswerSchema],
-  categoryResults: [CategoryResultSchema],
-  personalityString: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  testId: { type: mongoose.Schema.Types.ObjectId, ref: 'Test', required: true }, 
+  categoryResults: [{
+    category_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }, 
+    percentage: { type: Number, min: 0, max: 100, required: true }
+  }],
+  personalityTypeId: { type: mongoose.Schema.Types.ObjectId, ref: 'PersonalityType', default: null }, 
+  personalityTypeMatch: { type: Number, default: null }, 
   isComplete: { type: Boolean, default: false },
-  completedAt: { type: Date },
-  createdAt: { type: Date },
+  createdAt: { type: Date, default: Date.now }
 });
 
 const Result = mongoose.model('Result', ResultSchema);
