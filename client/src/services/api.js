@@ -12,3 +12,25 @@ export const deleteUser = async (id) => {
         throw error;
     }
 };
+
+export const sendDataOfContactPage = async (data) => {
+  
+    try {
+      const response = await fetch("http://localhost:5000/api/contact", {  // שלח לשרת
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+      console.log("status----: " + response.status);
+      
+      } else {
+        throw new Error(result.message || "שגיאה בשליחת הטופס");
+      }
+    } catch (error) {
+      console.log(error);
+  
+    }
+  };

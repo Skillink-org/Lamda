@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Loader2 } from "lucide-react";
+import sendDataOfContactPage from '../../services/sendDataOfContactPage'
 
 const schema = yup.object().shape({
   fullName: yup.string().required("שם מלא הוא שדה חובה"),
@@ -51,6 +52,14 @@ const ContactPage = () => {
     setLoading(false);
   };
 
+  const sendData = async (data) => {
+    setLoading(true);
+    setStatusMessage("");
+    sendDataOfContactPage(data);
+    setLoading(false);
+  };
+  
+
   return (
 <div className="contactPageContainer">
               {console.log("enter to contract page")}
@@ -73,7 +82,7 @@ const ContactPage = () => {
                           {errors.message && <p className="text-red-500">{errors.message.message}</p>}
                         </div>
                         <div className="submitBtnContainer">
-                          <button type="submit" disabled={loading} className="sendBtn">
+                          <button type="submit" disabled={loading} className="sendBtn"  onClick={()=>{sendData}}>
                             {loading ? <Loader2 className="animate-spin" /> : "שלח"}
                           </button>
                         </div>
