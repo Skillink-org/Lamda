@@ -4,6 +4,10 @@ import styles from "./EditModal.module.scss";
 
 
 const initializeFormState = (fields) => {
+  if (!Array.isArray(fields)) {
+    console.error("Error: fields is not an array", fields);
+    return {};
+  }
   return fields.reduce((acc, field) => {
     acc[field.name] = "";
     return acc;
