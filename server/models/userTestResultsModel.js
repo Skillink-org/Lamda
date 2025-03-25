@@ -2,11 +2,11 @@
 // result model
 const mongoose = require('mongoose');
 
-const ResultSchema = new mongoose.Schema({
+const UserTestResultsSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   testId: { type: mongoose.Schema.Types.ObjectId, ref: 'Test', required: true }, 
   categoryResults: [{
-    category_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }, 
+    categoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }, 
     percentage: { type: Number, min: 0, max: 100, required: true }
   }],
   personalityTypeId: { type: mongoose.Schema.Types.ObjectId, ref: 'PersonalityType', default: null }, 
@@ -15,6 +15,6 @@ const ResultSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const Result = mongoose.model('Result', ResultSchema);
+const UserTestResults = mongoose.model('Result', UserTestResultsSchema);
 
-module.exports = Result;
+module.exports = UserTestResults;

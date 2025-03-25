@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const resultsService = require("./resultService");
+const { calculateAndSaveResult } = require("./resultService");
 
-// ראוט לחישוב ושמירת תוצאה
 router.post("/saveResult", async (req, res) => {
     try {
-        const result = await resultsService.calculateAndSaveResult(req.body);
+        const result = await calculateAndSaveResult(req.body);
         res.status(201).json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });
