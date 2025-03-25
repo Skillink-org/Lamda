@@ -1,4 +1,5 @@
-@use '../../styles/vars' as *;
+@use "../../styles/vars" as *;
+@use "../../styles/mixins" as *;
 
 // .userProfileContainer {
 //   background-color: $light-blue-light;
@@ -9,29 +10,29 @@
 //   font-family: $font-family;
 // }
 .userProfileContainer {
-    background-color: $light-blue-light;
-    min-height: calc(100vh); // מתחשב בגובה ה-Header
-    width: 100vw; // מכסה את כל המסך לרוחב
-    padding: $container-padding;
-    direction: ltr;
-    font-family: $font-family;
-    display: flex;
-    justify-content: flex-end; // התוכן נצמד לשמאל
-    align-items: flex-start;
-    overflow-x: hidden;
+  background-color: $light-blue-light;
+  min-height: calc(100vh); // מתחשב בגובה ה-Header
+  width: 100vw; // מכסה את כל המסך לרוחב
+  padding: $container-padding;
+  direction: ltr;
+  font-family: $font-family;
+  display: flex;
+  justify-content: flex-end; // התוכן נצמד לשמאל
+  align-items: flex-start;
+  overflow-x: hidden;
+}
+
+.userProfileContent {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: $grid-gap;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: $breakpoint-lg) {
+    grid-template-columns: 1fr;
   }
-  
-  .userProfileContent {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: $grid-gap;
-    max-width: 1200px;
-    margin: 0 auto;
-    
-    @media (max-width: $breakpoint-lg) {
-      grid-template-columns: 1fr;
-    }
-  }
+}
 
 .mainSection {
   display: flex;
@@ -43,4 +44,20 @@
   @media (max-width: $breakpoint-lg) {
     order: -1;
   }
+}
+// edit user profile
+.userProfile {
+  @include card;
+  margin-top: 24%;
+  align-items: center;
+  text-align: center;
+}
+.avatarUser {
+  align-items: center;
+  margin-left: 30%;
+}
+
+.editButton {
+  @include primary-button;
+  width: 80%;
 }

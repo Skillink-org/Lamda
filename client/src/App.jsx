@@ -12,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/:developerName" element={<TestPage />} />
         <Route path="/profile" element={<UserProfile />} />
+        <Route path="/profile" element={<UserProfile />} />
       </Routes>
       <Header />
     </Router>
