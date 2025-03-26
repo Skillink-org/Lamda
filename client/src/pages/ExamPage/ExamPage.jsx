@@ -13,7 +13,7 @@ export const ExamPage = () => {
     const question = "באיזו מידה אתה מעדיף ללמוד סוגיה בצורה מעמיקה על פני לימוד מהיר של דף גמרא?";
     const answers = ["במידה רבה מאד", "במידה רבה", "במידה בינונית", "במידה מועטה", "כלל לא"];
     //const isLastQuestion = false;
-    const [currentQuestion, setCurrentQuestion] = useState(1);
+    const [currentQuestion] = useState(1);
     const totalQuestions = 10;
 
     const handleAnswerChange = (answer) => {

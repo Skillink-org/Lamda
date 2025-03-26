@@ -1,12 +1,9 @@
-import './ContactPage.module.scss'
-
-import React from 'react';
-import { useState } from "react";
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Loader2 } from "lucide-react";
-import sendDataOfContactPage from '../../services/sendDataOfContactPage'
+import { sendDataOfContactPage } from '../../services/api.js'; 
 
 const schema = yup.object().shape({
   fullName: yup.string().required("שם מלא הוא שדה חובה"),
@@ -30,83 +27,60 @@ const ContactPage = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     setStatusMessage("");
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      if (response.ok) {
-        setStatusType("success");
-        setStatusMessage("הטופס נשלח בהצלחה!");
-        reset();
-      } else {
-        throw new Error(result.message || "שגיאה בשליחת הטופס");
-      }
-    } catch (error) {
-      console.log(error);
-      setStatusType("error");
-      setStatusMessage(error.message);
-    }
-    setLoading(false);
-  };
 
-  const sendData = async (data) => {
-    setLoading(true);
-    setStatusMessage("");
-    sendDataOfContactPage(data);
+    const result = await sendDataOfContactPage(data); 
+
+    if (result.success) {
+      setStatusType("success");
+      setStatusMessage(result.message);
+      reset(); 
+    } else {
+      setStatusType("error");
+      setStatusMessage(result.message);
+    }
+
     setLoading(false);
   };
-  
 
   return (
-<div className="contactPageContainer">
-              {console.log("enter to contract page")}
-                      <h2 className="title">טופס יצירת קשר</h2>
-                      <form onSubmit={handleSubmit(onSubmit)} className="contactFormContainer">
-                      <div className='fullNameContainer'>
-                          <input placeholder="שם מלא" {...register("fullName")} className='fullNameInput'/>
-                          {errors.fullName && <p className="text-red-500">{errors.fullName.message}</p>}
-                        </div>
-                        <div className='emailContainer'>
-                          <input type="email" placeholder="אימייל" {...register("email")} className='emailInput'/>
-                          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-                        </div>
-                        <div className='contentSubjectContainer'>
-                          <input placeholder="נושא הפנייה" {...register("subject")} className='contentSubjectInput'/>
-                          {errors.subject && <p className="text-red-500">{errors.subject.message}</p>}
-                        </div>
-                        <div className='contentContextContainer'>
-                          <textarea placeholder="תוכן הפנייה" {...register("message")} className='contentContextArea'/>
-                          {errors.message && <p className="text-red-500">{errors.message.message}</p>}
-                        </div>
-                        <div className="submitBtnContainer">
-                          <button type="submit" disabled={loading} className="sendBtn"  onClick={()=>{sendData}}>
-                            {loading ? <Loader2 className="animate-spin" /> : "שלח"}
-                          </button>
-                        </div>
-                      </form>
-                        
-                      
-                      
-                        
-                        
-                    
-                
-                      {statusMessage && (
-                        <p className={`mt-4 ${statusType === "success" ? "text-green-600" : "text-red-600"}`}>
-                          {statusMessage}
-                        </p>
-                      )}
+    <div className="contactPageContainer">
+      {console.log("נכנס לעמוד יצירת קשר")}
+      <h2 className="title">טופס יצירת קשר</h2>
 
-                      {/* <div className="viewDetailes">
-                          <h3 className="text-lg font-semibold">יצירת קשר ישירה</h3>
-                          <p>📞 טלפון: 03-1234567</p>
-                          <p>📧 אימייל: contact@example.com</p>
-                        </CardContent>
-                      </div>  */}
-      </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="contactFormContainer">
+        <div className='fullNameContainer'>
+          <input placeholder="שם מלא" {...register("fullName")} className='fullNameInput' />
+          {errors.fullName && <p className="text-red-500">{errors.fullName.message}</p>}
+        </div>
+
+        <div className='emailContainer'>
+          <input type="email" placeholder="אימייל" {...register("email")} className='emailInput' />
+          {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+        </div>
+
+        <div className='contentSubjectContainer'>
+          <input placeholder="נושא הפנייה" {...register("subject")} className='contentSubjectInput' />
+          {errors.subject && <p className="text-red-500">{errors.subject.message}</p>}
+        </div>
+
+        <div className='contentContextContainer'>
+          <textarea placeholder="תוכן הפנייה" {...register("message")} className='contentContextArea' />
+          {errors.message && <p className="text-red-500">{errors.message.message}</p>}
+        </div>
+
+        <div className="submitBtnContainer">
+          <button type="submit" disabled={loading} className="sendBtn">
+            {loading ? <Loader2 className="animate-spin" /> : "שלח"}
+          </button>
+        </div>
+      </form>
+
+      {statusMessage && (
+        <p className={`mt-4 ${statusType === "success" ? "text-green-600" : "text-red-600"}`}>
+          {statusMessage}
+        </p>
+      )}
+    </div>
   );
 };
 
