@@ -1,0 +1,112 @@
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #e6f0f9;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    direction: rtl;
+    
+    .auth-box {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ddd;
+      
+      .auth-tabs {
+        margin-bottom: 20px;
+        
+        .MuiTab-root {
+          font-size: 16px;
+          font-weight: 500;
+          text-transform: none;
+          padding: 12px 16px;
+        }
+        
+        .Mui-selected {
+          font-weight: 600;
+        }
+        
+        .MuiTabs-indicator {
+          height: 3px;
+          background-color: #f0b90b;
+        }
+      }
+      
+      .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 10px 0;
+        
+        .MuiTextField-root {
+          .MuiOutlinedInput-root {
+            border-radius: 4px;
+            
+            .MuiOutlinedInput-notchedOutline {
+              border-color: #e0e0e0;
+            }
+            
+            &:hover .MuiOutlinedInput-notchedOutline {
+              border-color: #bdbdbd;
+            }
+            
+            &.Mui-focused .MuiOutlinedInput-notchedOutline {
+              border-color: #0d47a1;
+            }
+          }
+          
+          .MuiInputLabel-root {
+            transform-origin: top right;
+            right: 14px;
+            left: auto;
+            
+            &.MuiInputLabel-shrink {
+              transform: translate(0, -9px) scale(0.75);
+            }
+          }
+  
+          svg {
+            color: #666;
+          }
+        }
+        
+        .MuiButton-root {
+          background-color: #0d47a1;
+          color: white;
+          height: 50px;
+          font-size: 16px;
+          font-weight: 500;
+          text-transform: none;
+          box-shadow: none;
+          margin-top: 10px;
+          
+          &:hover {
+            background-color: #0a3d8f;
+          }
+        }
+      }
+    }
+  }
+  
+  
+  
+  // Media query for responsive design
+  @media (min-width: 768px) {
+    .auth-container {
+      flex-direction: row;
+      
+      .auth-box {
+        margin-right: 40px;
+      }
+      
+      .content-wrapper {
+        flex: 1;
+      }
+    }
+  }

@@ -1,6 +1,10 @@
 import "./App.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { TestPage } from "./pages/TestPage";
+import Routing from './routes/route'
+import Header from './components/Header/Header';
+import HomePage from './pages/homePage/HomePage';
+import AuthForm from './components/AuthForm/AuthForm';
 import ContactPage  from "./pages/contactPage/ContactPage.jsx";
 import Header from "./components/Header/Header";
 import UserProfile from "./components/UserProfile/UserProfile";
@@ -16,19 +20,19 @@ function App() {
 
 
   return (
-    <Router>
-      <Routing/>
-      <Routes>
-        {/* <Route path="/:developerName" element={<TestPage />} /> */}
-        {/* <Route path="/profile" element={<UserProfile />} /> */}
-        {/* <Route path="/contact" element={<ContactPage />} /> */}
-      </Routes>
-      <Header />
-      <ExamPage/>
-    </Router>
-  );
+    // <Router>
+    //   <Routes>
+    //     <Route path="/:developerName" element={<TestPage />} />
+    //   </Routes>
+    //   {/* </Router> */}
+    //   <Header />
+    //   <ExamPage />
+
+    //   {/* <Routing /> */}
+    // </Router>
+    <HomePage></HomePage>
+  )
+   
 }
 
 export default App;
-
-
