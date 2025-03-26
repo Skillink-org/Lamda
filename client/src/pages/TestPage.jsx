@@ -6,6 +6,7 @@ export function TestPage() {
   const [DeveloperComponent, setDeveloperComponent] = useState(null);
 
   useEffect(() => {
+    
     async function loadComponent() {
       try {
         const module = await import(`../components/tests/${developerName}.jsx`);
