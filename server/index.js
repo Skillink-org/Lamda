@@ -9,11 +9,13 @@ app.use(cors());
 app.use(express.json());
 
 const userRoutes = require('./apis/users/userRoutes');
+const testRoutes =require('./apis/exams-tests/testRoutes');
 
 const config = yaml.load(fs.readFileSync('./config/config.yaml', 'utf8'));
 const port = config.server.port;
 
 app.use('/api/users', userRoutes);
+app.use('/api/tests', testRoutes);
 
 connectDB();
 app.listen(port, () => {
