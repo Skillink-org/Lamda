@@ -1,13 +1,10 @@
-//user repository
-const { User } = require("../../models/userModel");
+let contactDatabase = [];
 
-const findUserByEmail = async (email) => {
-  return await User.findOne({ email });
+async function saveContact(contactData) {
+  contactDatabase.push(contactData);
+  return contactData;
+}
+
+module.exports = {
+  saveContact
 };
-
-const createUser = async (userData) => {
-  const user = new User(userData);
-  return await user.save();
-};
-
-module.exports = { findUserByEmail, createUser };

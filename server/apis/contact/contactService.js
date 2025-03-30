@@ -1,33 +1,55 @@
-const { saveContact } = require('../repository/contactRepository');
-const nodemailer = require('nodemailer');
+// const contactRepository = require('./repository');
+// const Joi = require('joi'); // הספריה לולידציה
 
-const sendEmail = async (to, subject, text) => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
+// // Validation schema
+// const contactSchema = Joi.object({
+//   fullName: Joi.string().min(3).required(),
+//   email: Joi.string().email().required(),
+//   subject: Joi.string().min(3).required(),
+//   message: Joi.string().min(5).required()
+// });
 
-    await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to,
-        subject,
-        text
-    });
+// async function handleContactForm(contactData) {
+//   // Validating input data
+//   const { error } = contactSchema.validate(contactData);
+//   if (error) {
+//     throw new Error(error.details[0].message);
+//   }
+
+//   // Save to database or process further (in future, we will add email sending here)
+//   const savedContact = await contactRepository.saveContact(contactData);
+//   return { message: 'Your message has been successfully received!' };
+// }
+
+// module.exports = {
+//   handleContactForm
+// };
+
+const Joi = require('joi'); // ספריית ולידציה
+
+// Schema for validation
+const contactSchema = Joi.object({
+  fullName: Joi.string().min(3).required(),
+  email: Joi.string().email().required(),
+  subject: Joi.string().min(3).required(),
+  message: Joi.string().min(5).required(),
+});
+
+async function handleContactForm(contactData) {
+  // Validate the contact form data
+  const { error } = contactSchema.validate(contactData);
+  if (error) {
+    throw new Error(error.details[0].message); // אם יש שגיאה, נשלח את ההודעה למעלה
+  }
+
+  // במקום לשמור למסד נתונים, נוודא שהנתונים הושגו ונחזיר תגובה
+  console.log('Contact form submitted:', contactData);
+
+  // Return a success message
+  return { message: 'Your message has been successfully received! (Mock version)' };
+}
+
+module.exports = {
+  handleContactForm
 };
 
-const handleContactForm = async (data) => {
-    const savedContact = await saveContact(data);
-
-    await sendEmail(process.env.ADMIN_EMAIL, "New Contact Form Submission",
-        `New message from ${data.fullName} (${data.email}):\n\n${data.message}`);
-
-    await sendEmail(data.email, "We Received Your Message",
-        `Thank you, ${data.fullName}, for reaching out. We'll get back to you soon!`);
-
-    return savedContact;
-};
-
-module.exports = { handleContactForm };

@@ -10,14 +10,16 @@ app.use(express.json());
 
 const userRoutes = require('./apis/users/userRoutes');
 const resultsRoutes = require('./apis/results/resultRoutes');
+const contactRoutes = require('./apis/contact/contactRoutes'); 
 
 const config = yaml.load(fs.readFileSync('./config/config.yaml', 'utf8'));
 const port = config.server.port || 5000;
 
 app.use('/api/users', userRoutes);
 app.use('/api/results', resultsRoutes);
+app.use('/api/contact', contactRoutes);
 
-connectDB();
+// connectDB();
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
