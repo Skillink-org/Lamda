@@ -1,15 +1,6 @@
 import axios from 'axios';
 const API_URL = 'http://localhost:8080/api';
 
- export const deleteUser = async (id) => {
-    try {
-        const response = await axios.delete(`${API_URL}/xxxx/${id}`);
-        return response.status === 200;
-    } catch (error) {
-        console.error('Error deleting user:', error);
-        throw error;
-    }
-};
 
 export const sendDataOfContactPage = async (data) => {
   try {
@@ -18,12 +9,12 @@ export const sendDataOfContactPage = async (data) => {
       headers: { "Content-Type": "application/json" },
     });
 
-    return { success: true, message: "הטופס נשלח בהצלחה!" };
+    return { success: true, message:"Recieved Successfully" };
   } catch (error) {
-    console.error("שגיאה בשליחת הטופס:", error);
+    console.error("Error on sending page:", error);
     
     const errorMessage =
-      error.response?.data?.message || "שגיאה בשליחת הטופס";
+      error.response?.data?.message || "Error on sending page";
 
     return { success: false, message: errorMessage };
   }
