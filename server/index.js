@@ -11,7 +11,7 @@ app.use(express.json());
 const userRoutes = require('./apis/users/userRoutes');
 
 const config = yaml.load(fs.readFileSync('./config/config.yaml', 'utf8'));
-const port = config.server.port;
+const port = config.server.port || 5000;
 
 app.use('/api/users', userRoutes);
 

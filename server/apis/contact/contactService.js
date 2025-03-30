@@ -1,14 +1,33 @@
-//user service
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { findUserByEmail, createUser } = require("./repository.js");
+const { saveContact } = require('../repository/contactRepository');
+const nodemailer = require('nodemailer');
 
-const registerUser = async (firstName, lastName, email, password) => {
-  const existingUser = await findUserByEmail(email);
-  if (existingUser) throw new Error("Email already in use");
+const sendEmail = async (to, subject, text) => {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  return await createUser({ firstName, lastName, email, password: hashedPassword });
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to,
+        subject,
+        text
+    });
 };
 
-module.exports = { registerUser };
+const handleContactForm = async (data) => {
+    const savedContact = await saveContact(data);
+
+    await sendEmail(process.env.ADMIN_EMAIL, "New Contact Form Submission",
+        `New message from ${data.fullName} (${data.email}):\n\n${data.message}`);
+
+    await sendEmail(data.email, "We Received Your Message",
+        `Thank you, ${data.fullName}, for reaching out. We'll get back to you soon!`);
+
+    return savedContact;
+};
+
+module.exports = { handleContactForm };
