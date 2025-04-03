@@ -9,105 +9,131 @@ const ProgressBar = ({ currentQuestion, totalQuestions }) => {
         </div>
     );
 };
+const q1 = "באיזו מידה אתה מעדיף ללמוד סוגיה בצורה מעמיקה על פני לימוד מהיר של דף גמרא?";
+const options = [
+    { text: "במידה רבה מאד", value: 50 },
+    { text: "במידה רבה", value: 25 },
+    { text: "ניטרלי", value: 0 },
+    { text: "במידה מועטה", value: -25 },
+    { text: "בכלל לא", value: -50 }
+];
 export const ExamPage = () => {
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
-<<<<<<< Updated upstream
-    const question = "באיזו מידה אתה מעדיף ללמוד סוגיה בצורה מעמיקה על פני לימוד מהיר של דף גמרא?";
-    const answers = ["במידה רבה מאד", "במידה רבה", "במידה בינונית", "במידה מועטה", "כלל לא"];
-    //const isLastQuestion = false;
-=======
-    //const question = "באיזו מידה אתה מעדיף ללמוד סוגיה בצורה מעמיקה על פני לימוד מהיר של דף גמרא?";
-    const [question, setQuestion] = useState("");
-    const answers = ["במידה רבה מאד", "במידה רבה", "במידה בינונית", "במידה מועטה", "כלל לא"];
-    //const [answers, setAnswers] = useState([]);
-    const [questions, setQuestions] = useState([]);
->>>>>>> Stashed changes
-    const [currentQuestion, setCurrentQuestion] = useState(1);
-    const totalQuestions = 10;
+    const [loading, setLoading] = useState(false); // מצב טעינה
 
-    // פונקציה לטעינת המבחן מהשרת
+    const [selectedAnswer, setSelectedAnswer] = useState(null);
+
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+    const [questions, setQuestions] = useState([]);
+
+    const [answersList, setAnswersList] = useState([]); // רשימה לשמור את התשובות
+
+    const navigate = useNavigate();
+
     const fetchExam = async () => {
+        setLoading(true);
         try {
-            const response = await axios('http://localhost:8080/api/getExam');
-            const data = await response.json();
+            const response = await axios.get('http://localhost:8080/api/exam'); // עדכן את ה-URL
+            const data = response.data;
             // מיפוי השאלות מתוך האובייקט
             const allQuestions = data.categories.flatMap(category => category.questions);
             setQuestions(allQuestions);
-            setQuestion(allQuestions[currentQuestionIndex].text);
+            setAnswers(allQuestions[currentQuestionIndex].answers || []); // אם יש תשובות לשאלה
         } catch (error) {
-            console.log('Error fetching exam:', error);
+            console.error('Error fetching exam:', error);
         }
-    };
-    const submitResults = async () => {
-        try {
-            const results = {
-                question: question,
-                selectedAnswer: selectedAnswer,
-            };
-
-            const response = await fetch('http://localhost:8080/api/saveResult', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(results),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const result = await response.json();
-            console.log('Results saved:', result);
-        } catch (error) {
-            console.error('Error saving results:', error);
+        finally {
+            setLoading(false); // לוודא שהמצב חוזר ל-false
         }
     };
     useEffect(() => {
         fetchExam(); // טען את המבחן כאשר העמוד נטען
     }, []);
 
+    // פונקציה לשמירת תשובה
     const handleAnswerChange = (answer) => {
         setSelectedAnswer(answer);
+        setAnswersList(prevAnswers => {
+            const updatedAnswers = [...prevAnswers];
+            updatedAnswers[currentQuestionIndex] = answer;// עדכון התשובה הנוכחית
+            return updatedAnswers;
+        });
     };
 
-    const handleSubmit = () => {
-        submitResults(); // שלח את התוצאות כאשר המבחן מסתיים
+    const onPrev = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
+            setSelectedAnswer(answersList[currentQuestionIndex - 1] || null); // לאפס את התשובה הנבחרת כשעוברים לשאלה קודמת
+        }
     };
+
+    const onNext = async () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setQuestion(questions[currentQuestionIndex + 1].text);
+            setSelectedAnswer(answersList[currentQuestionIndex + 1] || null); // לאפס את התשובה הנבחרת כשעוברים לשאלה הבאה
+        } else {
+            // ווידוא שכל השאלות מולאו
+            if (answersList.length < questions.length) {
+                alert('נא למלא את כל השאלות לפני שליחה.');
+                return;
+            }
+
+            setLoading(true); // הפעלת מצב טעינה
+            try {
+                // שליחת התשובות לשרת
+                const response = await axios.post('http://localhost:8080/api/results/saveResult', {
+                    answers: answersList // שליחת התשובות
+                });
+                if (response.status === 200) {
+                    navigate('/resultsPage'/*, { state: { answers: answersList } }*/);// אם הבקשה הצליחה, נווט לעמוד תוצאות
+                } else {
+                    alert('הייתה בעיה בשמירת התשובות, אנא נסה שוב.');
+                }
+            } catch (error) {
+                console.error('Error saving answers:', error);
+            }finally {
+                setLoading(false); // לוודא שהמצב חוזר ל-false
+            }
+        }
+    };
+
     return (
         <>
+            {loading && <div>טוען...</div>} {/* תצוגת טעינה */}
+
             <div>
                 <div className={styles.examCard}>
-                    <h1 className={styles.h1}>{question}</h1>
+                    <h1 className={styles.h1}>{q1} {questions[currentQuestionIndex]?.text}</h1>
                     <form>
-                        {answers.map((answer, index) =>
+                        {options.map((option, index) => (
                             <label
-                                className={`${styles.answerCard} ${selectedAnswer === answer ? styles.selected : ''}`}
+                                className={`${styles.answerCard} ${selectedAnswer === option ? styles.selected : ''}`}
                                 key={index}
-                                htmlFor={`answer${index}`}
-                                onClick={() => handleAnswerChange(answer)}// עדכון התשובה הנבחרת
+                                htmlFor={`option${index}`}
+                            //onClick={() => handleAnswerChange(option)}// עדכון התשובה הנבחרת
                             >
-                                <input className={styles.answers}
+                                <input className={styles.option}
                                     type="radio"
-                                    id={`answer${index}`}
+                                    id={`option${index}`}
                                     name="quiz"
-                                    value={answer}
-                                    checked={selectedAnswer === answer}
-                                    onChange={handleAnswerChange}
-                                    aria-label={`בחר תשובה: ${answer}`} // הוספת נגישות
+                                    value={option.text}
+                                    checked={selectedAnswer === option.text}
+                                    onChange={() => handleAnswerChange(option)}
+                                    aria-label={`בחר תשובה: ${option.text}`} // הוספת נגישות
                                 />
                                 <span className={styles.radioCustom}></span>
-                                {answer}
+                                {option.text}
                             </label>
-                        )}
+                        ))}
                     </form>
 
                 </div>
                 <div className='buttonBar' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '30px' }}>
-                    <button className={styles.secondaryButton} >{"< שאלה קודמת"} </button>
-                    <button className={styles.primaryButton}>{currentQuestion < 10 ? "שאלה הבאה >" : "סיום מבחן"}</button>
+                    <button onClick={onPrev} className={styles.prevButton} disabled={currentQuestionIndex === 0} >{"< שאלה קודמת"} </button>
+                    <button onClick={onNext} className={styles.nextButton}>{currentQuestionIndex < questions.length - 1 ? "שאלה הבאה >" : "סיום מבחן"}</button>
                 </div>
-                <ProgressBar currentQuestion={currentQuestion} totalQuestions={totalQuestions} />
+                <ProgressBar currentQuestion={currentQuestionIndex + 1} totalQuestions={questions.length} />
             </div>
-        </>);
-}
+        </>)
+};
