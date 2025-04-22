@@ -1,5 +1,6 @@
+import React, { useState, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import React, { useState } from 'react';
 import styles from './ExamPage.module.scss';
 
 const ProgressBar = ({ currentQuestion, totalQuestions }) => {
@@ -38,9 +39,9 @@ export const ExamPage = () => {
             // מיפוי השאלות מתוך האובייקט
             const allQuestions = data.categories.flatMap(category => category.questions);
             setQuestions(allQuestions);
-            setAnswers(allQuestions[currentQuestionIndex].answers || []); // אם יש תשובות לשאלה
         } catch (error) {
             console.error('Error fetching exam:', error);
+            alert('שגיאה בטעינת השאלות, אנא נסה שוב מאוחר יותר.');
         }
         finally {
             setLoading(false); // לוודא שהמצב חוזר ל-false
@@ -70,7 +71,6 @@ export const ExamPage = () => {
     const onNext = async () => {
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
-            setQuestion(questions[currentQuestionIndex + 1].text);
             setSelectedAnswer(answersList[currentQuestionIndex + 1] || null); // לאפס את התשובה הנבחרת כשעוברים לשאלה הבאה
         } else {
             // ווידוא שכל השאלות מולאו
