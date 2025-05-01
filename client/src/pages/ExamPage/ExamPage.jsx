@@ -19,7 +19,7 @@ export const ExamPage = () => {
         { text: "בכלל לא", value: -50 }
     ];
     //const isLastQuestion = false;
-    const [currentQuestion, setCurrentQuestion] = useState(1);
+    const [currentQuestion] = useState(1);
     const totalQuestions = 10;
 
     const handleAnswerChange = (answer) => {
