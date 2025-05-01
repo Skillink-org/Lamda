@@ -1,0 +1,130 @@
+@use "../../styles/vars" as *;
+@use "../../styles/mixins" as *;
+
+.main-content{
+  padding: 1rem;
+  margin:auto;
+  max-width: 100%;
+  background-color: $light-blue;
+  background-image: linear-gradient(to bottom, $light-blue, #fff);
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+
+}
+.about-page {
+    text-align: center;
+    width: 100%;
+    direction: rtl;
+    display: grid;
+    margin: 0;
+    padding: 7%;
+}
+
+
+.mission-vision-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2%;
+  max-width: 100%;
+  text-align: center;
+  margin-bottom: 2%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5%; 
+    margin-bottom: 4%; 
+  }
+}
+
+.about-card {
+  @include card;
+  max-width:100%;
+  text-align: center;
+  margin-bottom: 2%;
+}
+
+.card {
+  @include card;
+
+}
+
+h2 {
+  @include heading-2;
+  margin-bottom: 0.5rem;
+  @include decorative-underline;
+}
+
+.h4 {
+  @include heading-4
+}
+
+p {
+  font-size: 1.2rem;
+  color: #0c3d69;
+}
+
+.card-advantages {
+  @include card;
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  gap: 2%;
+  justify-content: space-between;
+  max-width:100%;
+  margin-bottom: 2%;
+  @media (max-width: 768px) {
+    display: grid;
+        grid-template-columns: 1fr;
+        gap: 2%;
+        text-align: center;
+        margin-bottom: 4%;
+  }
+  
+}
+
+.timeline-container {
+  position: relative;
+}
+
+.timeline-items {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.timeline-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeline-content {
+  width: 41.666667%;
+}
+.timeline-content.left {
+  text-align: left;
+}
+
+.timeline-content.right {
+  text-align: right;
+}
+.timeline-box {
+  @include info-box;
+
+}
+.timeline-spacer {
+  flex-grow: 1;
+  min-height: 50%; 
+}
+
+.timeline-container:before {
+  content: "";
+  position: absolute;
+  right: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color:$gold;
+}
