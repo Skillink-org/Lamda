@@ -6,43 +6,46 @@ const Question = require("../../models/questionModel");
 
 const getTestByName = async (name = "MBTI להתאמת סגנון לימוד תורני") => {
   try {
-    // שליפת המבחן לפי השם
+    // Fetching the exam by name
     const test = await Test.findOne({ name });
 
     if (!test) {
       throw new Error("Test not found");
     }
 
-    // שליפת הקטגוריות עבור המבחן
+    // Fetching the categories for the exam
     const categories = await Category.find({ testId: test._id });
 
-    // שליפת השאלות עבור כל קטגוריה
+    //  Fetching the questions for each category
     const categoriesWithQuestions = await Promise.all(
       categories.map(async (category) => {
-        const questions = await Question.find({ categoryId: category._id });
-        return {
-          ...category.toObject(),
-          questions, // הוספת השאלות לקטגוריה
-        };
+        try {
+          const questions = await Question.find({ categoryId: category._id });
+          return {
+            ...category.toObject(),
+            questions, // Adding the questions to the category
+          };
+        } catch (error) {
+          console.error(
+            `Error fetching questions for category ${category._id}:`,
+            error
+          );
+          return {
+            ...category.toObject(),
+            questions: [], // In case of an error, return an empty array for questions
+          };
+        }
       })
     );
 
-    // לוג של הקטגוריות והשאלות
-    console.log("Categories found:", categoriesWithQuestions);
-    categoriesWithQuestions.forEach((category) => {
-      console.log(
-        `Category: ${category.name}, Questions:${category.questions}`
-      );
-    });
-
-    // החזרת המבחן עם הקטגוריות והשאלות
+    // Returning the exam with categories and questions
     return {
-      ...test.toObject(), // המרת המבחן לאובייקט רגיל
-      categories: categoriesWithQuestions, // הוספת הקטגוריות עם השאלות
+      ...test.toObject(), // Converting the exam to a regular object
+      categories: categoriesWithQuestions, // Adding the categories with questions
     };
   } catch (error) {
     console.error("Error fetching test:", error);
-    throw error; // ניתן לנהל את השגיאה לפי הצורך
+    throw error;
   }
 };
 
