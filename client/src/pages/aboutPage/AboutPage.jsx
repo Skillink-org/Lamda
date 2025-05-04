@@ -6,6 +6,7 @@ import { Target, Star, Book, Users } from "lucide-react";
 const missionVisionData = [
   { icon: <Target />, title: "המטרה שלנו", description: "לסייע לכל לומד למצוא את דרך הלימוד המתאימה לו ביותר, תוך התחשבות במאפייניו האישיים וסגנון הלמידה הטבעי שלו." },
   { icon: <Star />, title: "החזון שלנו", description: "ליצור עולם תורני בו כל לומד מממש את הפוטנציאל המלא שלו בלימוד, מתוך הבנה והתאמה אישית." }
+
 ];
 
 const testProcessSteps = [
