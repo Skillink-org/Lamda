@@ -1,6 +1,6 @@
 
 // import React, { useState } from 'react';
-// import { FaDownload, FaCalendarAlt } from 'react-icons/fa';
+import { FaDownload, FaCalendarAlt } from 'react-icons/fa';
 // import styles from './TestHistory.module.scss';
 
 // const TestHistory = () => {

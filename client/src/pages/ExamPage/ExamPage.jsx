@@ -34,8 +34,9 @@ export const ExamPage = () => {
     const fetchExam = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:8080/api/exam'); // עדכן את ה-URL
+            const response = await axios.get('http://localhost:8080/api/tests/getTest');
             const data = response.data;
+            console.log(data);
             // מיפוי השאלות מתוך האובייקט
             const allQuestions = data.categories.flatMap(category => category.questions);
             setQuestions(allQuestions);
