@@ -5,6 +5,8 @@ import ContactPage  from "./pages/contactPage/ContactPage.jsx";
 import Header from "./components/Header/Header";
 import UserProfile from "./components/UserProfile/UserProfile";
 import { useEffect } from "react";
+import Routing from "./routes/Routing";
+import {ExamPage} from "./pages/ExamPage/ExamPage";
 
 
 function App() {
@@ -15,12 +17,14 @@ function App() {
 
   return (
     <Router>
+      <Routing/>
       <Routes>
-        <Route path="/:developerName" element={<TestPage />} />
-        <Route path="/profile" element={<UserProfile />} />
-        <Route path="/contact" element={<ContactPage />} />
+        {/* <Route path="/:developerName" element={<TestPage />} /> */}
+        {/* <Route path="/profile" element={<UserProfile />} /> */}
+        {/* <Route path="/contact" element={<ContactPage />} /> */}
       </Routes>
       <Header />
+      <ExamPage/>
     </Router>
   );
 }
