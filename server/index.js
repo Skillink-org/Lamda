@@ -22,7 +22,7 @@ app.use("/api/tests", testRoutes);
 app.use('/api/contact', contactRoutes);
 
 
-// connectDB();
+connectDB();
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
