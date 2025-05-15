@@ -1,0 +1,70 @@
+.contactPageContainer {
+    background-color: red;
+    height: 100vh;
+    width: 100vw; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.title{
+    width:100vw;
+    height: 10vh;
+    align-items: center;
+}
+.contactFormContainer{
+    width:100vw;
+    height: 60vh;
+    align-items: center;
+
+}
+.fullNameContainer{
+    width: 100vw;
+    height: 10vh;
+    .fullNameInput{
+        width: 100%;
+        height: 10vh;
+
+        }
+}
+
+.emailContainer{
+    width: 100vw;
+    height: 10vh;
+    .emailInput{
+        width: 100%;
+        }
+}
+
+.contentSubjectContainer{
+    width: 100vw;
+    height: 10vh;
+    .contentSubjectInput{
+        width: 100vw;
+        height: 10vh;
+
+    }
+}
+.contentContextContainer{
+    width: 100vw;
+    height: 10vh;
+
+
+    .contentContextArea{
+        width: 100vw;
+        height: 30vh;
+    }
+}
+.submitBtnContainer{
+    width: 100vw;
+    height: 10vh;
+
+    .sendBtn{
+        width: 100vw;
+        height: 10vh;
+        background-color: blue;
+        color: white;
+    }
+}
