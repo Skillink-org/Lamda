@@ -1,4 +1,4 @@
-const { saveUserTestResult, getPersonalityTypeByString } = require("./resultRepo");
+const { saveUserTestResult, getPersonalityTypeByString,getRecommendationsByPersonalityType,getResultByUserId } = require("./resultRepo");
 
 const calculateAndSaveResult = async ({ userId, testId, categories }) => {
     if (!userId || !testId || !Array.isArray(categories)) {
@@ -86,5 +86,24 @@ const calculatePersonalityMatch = (categoryResults) => {
 
     return totalMatch / 4;
 };
+// פונקציה לשליפת תוצאות והמלצות עבור משתמש
 
-module.exports = { calculateAndSaveResult };
+const getResultAndRecommendations = async (userId) => {
+    try {
+        const result = await getResultByUserId(userId);
+        if (!result) {
+            throw new Error('No results found for this user');
+        }
+console.log("resultReco:",result.personalityTypeId ,result.testId);
+
+        const recommendations = await getRecommendationsByPersonalityType(result.personalityTypeId, result.testId);
+
+        return { result, recommendations };
+    } catch (error) {
+        console.error(error.message);
+        throw new Error('Error retrieving results and recommendations');
+    }
+};
+
+
+module.exports = { calculateAndSaveResult,getResultAndRecommendations };
