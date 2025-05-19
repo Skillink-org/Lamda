@@ -9,7 +9,6 @@ import { useEffect } from "react";
 
 function App() {
   useEffect(() => {
-    alert("Welcome to Lamda!"); 
   }, []);
 
 

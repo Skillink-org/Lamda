@@ -1,7 +1,7 @@
 // Repository layer for handling contact data (Mock database)
 
 // Mock database (temporary storage for contacts)
-let contactDatabase = [];
+let contactDB = [];
 
 /**
  * Saves contact data (assumes validation is already done)
@@ -10,7 +10,7 @@ let contactDatabase = [];
  * @returns {Object} The saved contact data
  */
 async function saveContact(contactData) {
-  contactDatabase.push(contactData);
+  contactDB.push(contactData);
   return contactData;
 }
 

@@ -42,7 +42,8 @@ const ContactPage = () => {
     } catch (error) {
       console.error("Unexpected error:", error); 
       setStatusType("error");
-      setStatusMessage("An unexpected error occurred. Please try again later.");    } finally {
+      setStatusMessage("An unexpected error occurred. Please try again later.");
+        } finally {
       setLoading(false);
     }
   };
