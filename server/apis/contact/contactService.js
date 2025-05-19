@@ -27,7 +27,6 @@
 //   handleContactForm
 // };
 const Joi = require('joi'); // ספריית ולידציה
-const nodemailer = require('nodemailer'); // ספריית שליחת אימיילים
 const contactRepository = require('../../repository/contactRepo'); // חיבור ל-Repository
 
 // 📌 הגדרת ולידציה עם Joi
