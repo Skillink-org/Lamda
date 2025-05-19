@@ -23,7 +23,7 @@ const contactService = require('./contactService');
 router.post('/', async (req, res) => {
   try {
     const contactData = req.body;
-    const response = await contactService.handleContactForm(contactData);
+    const response = await contactService.sendEmailToUserf(contactData);
     res.status(200).json(response);
   } catch (error) {
     res.status(400).json({ message: error.message });
