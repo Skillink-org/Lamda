@@ -28,6 +28,8 @@ export const ExamPage = () => {
     const [questions, setQuestions] = useState([]);
 
     const [answersList, setAnswersList] = useState([]); // רשימה לשמור את התשובות
+    const [userId, setUserId] = useState("67e2c74109abcb517b28a627");
+    const [testId, setTestId] = useState(null);
 
     const navigate = useNavigate();
 
@@ -36,12 +38,21 @@ export const ExamPage = () => {
         try {
             const response = await axios.get('http://localhost:8080/api/tests/getTest');
             const data = response.data;
+            console.log("data---");
             console.log(data);
+            //setTestId(data.code);
+            setTestId(data._id);
             // מיפוי השאלות מתוך האובייקט
+            
+
             const allQuestions = data.categories.flatMap(category => category.questions);
             setQuestions(allQuestions);
+            console.log("allQuestions**");
+            console.log(allQuestions);
         } catch (error) {
             console.error('Error fetching exam:', error);
+            console.log(error.response.data);
+
             alert('שגיאה בטעינת השאלות, אנא נסה שוב מאוחר יותר.');
         }
         finally {
@@ -55,11 +66,34 @@ export const ExamPage = () => {
     // פונקציה לשמירת תשובה
     const handleAnswerChange = (answer) => {
         setSelectedAnswer(answer);
+        console.log("התשובה שנבחרה");
+        console.log(answer);
         setAnswersList(prevAnswers => {
             const updatedAnswers = [...prevAnswers];
             updatedAnswers[currentQuestionIndex] = answer;// עדכון התשובה הנוכחית
             return updatedAnswers;
         });
+    };
+    const mapAnswersToResult = () => {
+        const result = {
+            userId: userId,
+            testId: testId,
+            categories: []
+        };
+
+        questions.forEach((question, index) => {
+            const category = result.categories.find(cat => cat.categoryId === question.categoryId);
+            if (category) {
+                category.answers.push(answersList[index]); // הוספת התשובה שנבחרה
+            } else {
+                result.categories.push({
+                    categoryId: question.categoryId,
+                    answers: [answersList[index]] // הוספת תשובה חדשה
+                });
+            }
+        });
+
+        return result;
     };
 
     const onPrev = () => {
@@ -82,10 +116,14 @@ export const ExamPage = () => {
 
             setLoading(true); // הפעלת מצב טעינה
             try {
+                console.log("answersList");
+                console.log(answersList);
+                const payload = mapAnswersToResult(); // בניית האובייקט לשליחה
+                console.log("האובייקט שיישלח לשרת:");
+                console.log(payload);
                 // שליחת התשובות לשרת
-                const response = await axios.post('http://localhost:8080/api/results/saveResult', {
-                    answers: answersList // שליחת התשובות
-                });
+                const response = await axios.post('http://localhost:8080/api/results/saveResult', payload);
+                console.log(response);
                 if (response.status === 200) {
                     navigate('/resultsPage'/*, { state: { answers: answersList } }*/);// אם הבקשה הצליחה, נווט לעמוד תוצאות
                 } else {
@@ -105,7 +143,7 @@ export const ExamPage = () => {
 
             <div>
                 <div className={styles.examCard}>
-                    <h1 className={styles.h1}>{q1} {questions[currentQuestionIndex]?.text}</h1>
+                    <h1 className={styles.h1}>{questions[currentQuestionIndex]?.text}</h1>
                     <form>
                         {options.map((option, index) => (
                             <label
