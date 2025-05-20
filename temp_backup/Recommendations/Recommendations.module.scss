@@ -1,0 +1,46 @@
+@use '../../styles/vars' as *;
+@use '../../styles/mixins' as *;
+
+.card {
+  @include card;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+  @include heading-2;
+  margin: 0;
+}
+
+.recommendationsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.recommendationCard {
+  background-color: $light-blue-light;
+  padding: 1rem;
+  border-radius: $border-radius-lg;
+}
+
+.recommendationTitle {
+  @include heading-4;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.recommendationList {
+  @include list-style;
+  padding: 0;
+  margin: 0;
+}

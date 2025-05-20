@@ -1,0 +1,46 @@
+@use '../../styles/vars' as *;
+
+// .userProfileContainer {
+//   background-color: $light-blue-light;
+//   min-height: 80vh;
+//   min-width: 80vh;
+//   padding: $container-padding;
+//   direction: rtl;
+//   font-family: $font-family;
+// }
+.userProfileContainer {
+    background-color: $light-blue-light;
+    min-height: calc(100vh); // מתחשב בגובה ה-Header
+    width: 100vw; // מכסה את כל המסך לרוחב
+    padding: $container-padding;
+    direction: ltr;
+    font-family: $font-family;
+    display: flex;
+    justify-content: flex-end; // התוכן נצמד לשמאל
+    align-items: flex-start;
+    overflow-x: hidden;
+  }
+  
+  .userProfileContent {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: $grid-gap;
+    max-width: 1200px;
+    margin: 0 auto;
+    
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+.mainSection {
+  display: flex;
+  flex-direction: column;
+  gap: $grid-gap;
+}
+
+.sideSection {
+  @media (max-width: $breakpoint-lg) {
+    order: -1;
+  }
+}
