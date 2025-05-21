@@ -1,9 +1,17 @@
 const mongoose = require('mongoose');
 const { saveUserTestResult, getPersonalityTypeByString } = require("./resultRepo");
 
+
 const calculateAndSaveResult = async ({ userId, testId, categories }) => {
-    if (!userId || !testId || !Array.isArray(categories)) {
-        throw new Error("Missing or invalid input data");
+  if (!userId || !testId || !Array.isArray(categories)) {
+    throw new Error("Missing or invalid input data");
+  }
+
+  // חישוב תוצאות לכל קטגוריה
+  const categoryResults = categories.map((category) => {
+    const { categoryId, answers } = category;
+    if (!categoryId || !Array.isArray(answers) || answers.length === 0) {
+      throw new Error("Invalid category data");
     }
 
     // חישוב תוצאות לכל קטגוריה
@@ -44,9 +52,9 @@ const calculateAndSaveResult = async ({ userId, testId, categories }) => {
 }
 
 const calculatePersonalityType = async (categoryResults) => {
-    if (!Array.isArray(categoryResults) || categoryResults.length !== 4) {
-        throw new Error("Invalid category results data");
-    }
+  if (!Array.isArray(categoryResults) || categoryResults.length !== 4) {
+    throw new Error("Invalid category results data");
+  }
 
     // מיפוי קטגוריות לאותיות
     const categoryMap = {
@@ -64,18 +72,20 @@ const calculatePersonalityType = async (categoryResults) => {
             throw new Error(`Unknown category ID: ${categoryId}`);
         }
 
-        // אם האחוז נמוך מ-50 בוחרים את האות הראשונה, אחרת את השנייה
+        // אם הערך נמוך מ-0 בוחרים את האות הראשונה, אחרת את השנייה
         personalityString += percentage < 0 ? categoryMap[categoryId][0] : categoryMap[categoryId][1];
     });
 
-    // חיפוש המזהה המתאים מה-DB
-    const personalityType = await getPersonalityTypeByString(personalityString);
+  // חיפוש המזהה המתאים מה-DB
+  const personalityType = await getPersonalityTypeByString(personalityString);
 
-    if (!personalityType) {
-        throw new Error(`No personality type found for string: ${personalityString}`);
-    }
+  if (!personalityType) {
+    throw new Error(
+      `No personality type found for string: ${personalityString}`
+    );
+  }
 
-    return personalityType.id;
+  return personalityType.id;
 };
 
 // פונקציה לחישוב מידת ההתאמה

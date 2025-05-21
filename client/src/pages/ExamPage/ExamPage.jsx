@@ -11,9 +11,15 @@ const ProgressBar = ({ currentQuestion, totalQuestions }) => {
 export const ExamPage = () => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const question = "באיזו מידה אתה מעדיף ללמוד סוגיה בצורה מעמיקה על פני לימוד מהיר של דף גמרא?";
-    const answers = ["במידה רבה מאד", "במידה רבה", "במידה בינונית", "במידה מועטה", "כלל לא"];
+    const answers = [
+        { text: "במידה רבה מאד", value: 50 },
+        { text: "במידה רבה", value: 25 },
+        { text: "ניטרלי", value: 0 },
+        { text: "במידה מועטה", value: -25 },
+        { text: "בכלל לא", value: -50 }
+    ];
     //const isLastQuestion = false;
-    const [currentQuestion, setCurrentQuestion] = useState(1);
+    const [currentQuestion] = useState(1);
     const totalQuestions = 10;
 
     const handleAnswerChange = (answer) => {
@@ -38,13 +44,13 @@ export const ExamPage = () => {
                                     type="radio"
                                     id={`answer${index}`}
                                     name="quiz"
-                                    value={answer}
+                                    value={answer.text}
                                     checked={selectedAnswer === answer}
                                     onChange={handleAnswerChange}
-                                    aria-label={`בחר תשובה: ${answer}`} // הוספת נגישות
+                                    aria-label={`בחר תשובה: ${answer.text}`} // הוספת נגישות
                                 />
                                 <span className={styles.radioCustom}></span>
-                                {answer}
+                                {answer.text}
                             </label>
                         )}
                     </form>
