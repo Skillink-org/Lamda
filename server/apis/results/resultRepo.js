@@ -9,7 +9,7 @@ const saveUserTestResult = async (testResultData) => {
 
 // שליפת סוג האישיות לפי מחרוזת האישיות
 const getPersonalityTypeByString = async (personalityString) => {
-    return await PersonalityType.findOne({ personality_string: personalityString });
+    return await PersonalityType.findOne({ personalityString: personalityString });
 };
 
 module.exports = { saveUserTestResult, getPersonalityTypeByString };
