@@ -12,6 +12,10 @@ const calculateAndSaveResult = async ({ userId, testId, categories }) => {
         if (!categoryId || !Array.isArray(answers) || answers.length === 0) {
             throw new Error("Invalid category data");
         }
+        
+        if (!answers.every(a => typeof a.value === 'number' && a.value >= -50 && a.value <= 50)) {
+            throw new Error(`Invalid answer value in category ${categoryId}`);
+        }
 
         // חישוב ממוצע האחוזים של התשובות בקטגוריה
         const totalPercentage = answers.reduce((sum, answer) => sum + answer.value + 50, 0);
