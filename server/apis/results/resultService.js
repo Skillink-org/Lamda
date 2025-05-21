@@ -5,9 +5,6 @@ const calculateAndSaveResult = async ({ userId, testId, categories }) => {
         throw new Error("Missing or invalid input data");
     }
 
-    const userObjectId = mongoose.Types.ObjectId(userId);
-    const testObjectId = mongoose.Types.ObjectId(testId);
-
     // חישוב תוצאות לכל קטגוריה
     const categoryResults = categories.map(category => {
         const { categoryId, answers } = category;
@@ -27,8 +24,8 @@ const calculateAndSaveResult = async ({ userId, testId, categories }) => {
 
     // יצירת אובייקט לתוצאה
     const result = {
-        userObjectId,
-        testObjectId,
+        userId: mongoose.Types.ObjectId(userId),
+        testId: mongoose.Types.ObjectId(testId),
         categoryResults: categoryResults,
         personalityTypeId,
         personalityTypeMatch,
