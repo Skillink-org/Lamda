@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { saveUserTestResult, getPersonalityTypeByString } = require("./resultRepo");
 
 const calculateAndSaveResult = async ({ userId, testId, categories }) => {
@@ -13,19 +14,19 @@ const calculateAndSaveResult = async ({ userId, testId, categories }) => {
         }
 
         // חישוב ממוצע האחוזים של התשובות בקטגוריה
-        const totalPercentage = answers.reduce((sum, answer) => sum + answer, 0);
+        const totalPercentage = answers.reduce((sum, answer) => sum + answer.value + 50, 0);
         const averagePercentage = totalPercentage / answers.length;
 
         return { categoryId, percentage: averagePercentage };
     });
 
-    const personalityTypeId = calculatePersonalityType(categoryResults);
-    const personalityTypeMatch = calculatePersonalityMatch(categoryResults);
+    const personalityTypeId = await calculatePersonalityType(categoryResults);
+    const personalityTypeMatch = await calculatePersonalityMatch(categoryResults);
 
     // יצירת אובייקט לתוצאה
     const result = {
-        userId: mongoose.Types.ObjectId(userId),
-        testId: mongoose.Types.ObjectId(testId),
+        userId: new mongoose.Types.ObjectId(userId),
+        testId: new mongoose.Types.ObjectId(testId),
         categoryResults: categoryResults,
         personalityTypeId,
         personalityTypeMatch,
@@ -60,7 +61,7 @@ const calculatePersonalityType = async (categoryResults) => {
         }
 
         // אם האחוז נמוך מ-50 בוחרים את האות הראשונה, אחרת את השנייה
-        personalityString += percentage < 50 ? categoryMap[categoryId][0] : categoryMap[categoryId][1];
+        personalityString += percentage < 0 ? categoryMap[categoryId][0] : categoryMap[categoryId][1];
     });
 
     // חיפוש המזהה המתאים מה-DB
@@ -81,7 +82,7 @@ const calculatePersonalityMatch = (categoryResults) => {
 
     // חישוב ההתאמה לכל קטגוריה
     const totalMatch = categoryResults.reduce((sum, category) => {
-        return sum + (category.percentage >= 50 ? category.percentage : (100 - category.percentage));
+        return sum + (category.percentage >= 0 ? category.percentage + 50 : (100 - (50 + category.percentage)));
     }, 0);
 
     return totalMatch / 4;
