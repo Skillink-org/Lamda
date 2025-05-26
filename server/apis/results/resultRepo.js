@@ -20,7 +20,7 @@ const getResultByUserId = async (userId) => {
 
         console.log("finde one:",result);
 
-        return result;  // כאן החזרת תוצאה יחידה במקום כל התוצאות
+        return result;  
     } catch (error){
         console.log(error.message);
         throw new Error('No results found for this user.');
@@ -39,6 +39,7 @@ const getRecommendationsByPersonalityType = async (personalityTypeId,testId) => 
     } catch (error){
         throw new Error('Error retrieving results and recommendations');
     }
+
 }
 
 module.exports = { saveUserTestResult, getPersonalityTypeByString,getResultByUserId ,getRecommendationsByPersonalityType};

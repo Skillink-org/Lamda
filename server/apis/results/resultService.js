@@ -98,7 +98,7 @@ console.log("resultReco:",result.personalityTypeId ,result.testId);
 
         const recommendations = await getRecommendationsByPersonalityType(result.personalityTypeId, result.testId);
 
-        return { result, recommendations };
+        return  recommendations ;
     } catch (error) {
         console.error(error.message);
         throw new Error('Error retrieving results and recommendations');
