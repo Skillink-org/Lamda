@@ -15,11 +15,11 @@ export const mapAnswersToResult = (userId, testId, questions, answersList) => {
     questions.forEach((question, index) => {
         const category = result.categories.find(cat => cat.categoryId === question.categoryId);
         if (category) {
-            category.answers.push(answersList[index]);
+            category.answers.push(answersList[index]);// הוספת התשובה שנבחרה
         } else {
             result.categories.push({
                 categoryId: question.categoryId,
-                answers: [answersList[index]]
+                answers: [answersList[index]]// הוספת תשובה חדשה
             });
         }
     });
