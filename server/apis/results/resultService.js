@@ -14,41 +14,35 @@ const calculateAndSaveResult = async ({ userId, testId, categories }) => {
       throw new Error("Invalid category data");
     }
 
-    // חישוב תוצאות לכל קטגוריה
-    const categoryResults = categories.map(category => {
-        const { categoryId, answers } = category;
-        if (!categoryId || !Array.isArray(answers) || answers.length === 0) {
-            throw new Error("Invalid category data");
-        }
-        
-        if (!answers.every(a => typeof a.value === 'number' && a.value >= -50 && a.value <= 50)) {
-            throw new Error(`Invalid answer value in category ${categoryId}`);
-        }
 
-        // חישוב ממוצע האחוזים של התשובות בקטגוריה
-        const totalPercentage = answers.reduce((sum, answer) => sum + answer.value + 50, 0);
-        const averagePercentage = totalPercentage / answers.length;
+    if (!answers.every(a => typeof a.value === 'number' && a.value >= -50 && a.value <= 50)) {
+      throw new Error(`Invalid answer value in category ${categoryId}`);
+    }
 
-        return { categoryId, percentage: averagePercentage };
-    });
+    // חישוב ממוצע האחוזים של התשובות בקטגוריה
+    const totalPercentage = answers.reduce((sum, answer) => sum + answer.value + 50, 0);
+    const averagePercentage = totalPercentage / answers.length;
 
-    const personalityTypeId = await calculatePersonalityType(categoryResults);
-    const personalityTypeMatch = await calculatePersonalityMatch(categoryResults);
+    return { categoryId, percentage: averagePercentage };
+  });
 
-    // יצירת אובייקט לתוצאה
-    const result = {
-        userId: new mongoose.Types.ObjectId(userId),
-        testId: new mongoose.Types.ObjectId(testId),
-        categoryResults: categoryResults,
-        personalityTypeId,
-        personalityTypeMatch,
-        isComplete: true,
-        createdAt: new Date(),
-    };
+  const personalityTypeId = await calculatePersonalityType(categoryResults);
+  const personalityTypeMatch = await calculatePersonalityMatch(categoryResults);
 
-    // שמירה בבסיס הנתונים
-    await saveUserTestResult(result);
-    return result;
+  // יצירת אובייקט לתוצאה
+  const result = {
+    userId: new mongoose.Types.ObjectId(userId),
+    testId: new mongoose.Types.ObjectId(testId),
+    categoryResults: categoryResults,
+    personalityTypeId,
+    personalityTypeMatch,
+    isComplete: true,
+    createdAt: new Date(),
+  };
+
+  // שמירה בבסיס הנתונים
+  await saveUserTestResult(result);
+  return result;
 }
 
 const calculatePersonalityType = async (categoryResults) => {
@@ -56,25 +50,25 @@ const calculatePersonalityType = async (categoryResults) => {
     throw new Error("Invalid category results data");
   }
 
-    // מיפוי קטגוריות לאותיות
-    const categoryMap = {
-        [categoryResults[0].categoryId]: ["E", "I"],
-        [categoryResults[1].categoryId]: ["S", "N"],
-        [categoryResults[2].categoryId]: ["T", "F"],
-        [categoryResults[3].categoryId]: ["J", "P"]
-    };
+  // מיפוי קטגוריות לאותיות
+  const categoryMap = {
+    [categoryResults[0].categoryId]: ["E", "I"],
+    [categoryResults[1].categoryId]: ["S", "N"],
+    [categoryResults[2].categoryId]: ["T", "F"],
+    [categoryResults[3].categoryId]: ["J", "P"]
+  };
 
-    let personalityString = "";
+  let personalityString = "";
 
-    categoryResults.forEach(category => {
-        const { categoryId, percentage } = category;
-        if (!categoryMap[categoryId]) {
-            throw new Error(`Unknown category ID: ${categoryId}`);
-        }
+  categoryResults.forEach(category => {
+    const { categoryId, percentage } = category;
+    if (!categoryMap[categoryId]) {
+      throw new Error(`Unknown category ID: ${categoryId}`);
+    }
 
-        // אם הערך נמוך מ-0 בוחרים את האות הראשונה, אחרת את השנייה
-        personalityString += percentage < 0 ? categoryMap[categoryId][0] : categoryMap[categoryId][1];
-    });
+    // אם הערך נמוך מ-0 בוחרים את האות הראשונה, אחרת את השנייה
+    personalityString += percentage < 0 ? categoryMap[categoryId][0] : categoryMap[categoryId][1];
+  });
 
   // חיפוש המזהה המתאים מה-DB
   const personalityType = await getPersonalityTypeByString(personalityString);
@@ -90,16 +84,16 @@ const calculatePersonalityType = async (categoryResults) => {
 
 // פונקציה לחישוב מידת ההתאמה
 const calculatePersonalityMatch = (categoryResults) => {
-    if (!Array.isArray(categoryResults) || categoryResults.length !== 4) {
-        throw new Error("Invalid category results data");
-    }
+  if (!Array.isArray(categoryResults) || categoryResults.length !== 4) {
+    throw new Error("Invalid category results data");
+  }
 
-    // חישוב ההתאמה לכל קטגוריה
-    const totalMatch = categoryResults.reduce((sum, category) => {
-        return sum + (category.percentage >= 0 ? category.percentage + 50 : (100 - (50 + category.percentage)));
-    }, 0);
+  // חישוב ההתאמה לכל קטגוריה
+  const totalMatch = categoryResults.reduce((sum, category) => {
+    return sum + (category.percentage >= 0 ? category.percentage + 50 : (100 - (50 + category.percentage)));
+  }, 0);
 
-    return totalMatch / 4;
+  return totalMatch / 4;
 };
 
 module.exports = { calculateAndSaveResult };
