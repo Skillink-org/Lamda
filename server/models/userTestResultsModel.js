@@ -15,6 +15,6 @@ const UserTestResultsSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const UserTestResults = mongoose.model('Result', UserTestResultsSchema);
+const UserTestResults = mongoose.model('UserTestResult', UserTestResultsSchema);
 
 module.exports = UserTestResults;

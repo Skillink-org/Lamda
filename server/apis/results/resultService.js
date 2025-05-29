@@ -1,7 +1,6 @@
-const {
-  saveUserTestResult,
-  getPersonalityTypeByString,
-} = require("./resultRepo");
+const mongoose = require('mongoose');
+const { saveUserTestResult, getPersonalityTypeByString } = require("./resultRepo");
+
 
 const calculateAndSaveResult = async ({ userId, testId, categories }) => {
   if (!userId || !testId || !Array.isArray(categories)) {
@@ -15,20 +14,25 @@ const calculateAndSaveResult = async ({ userId, testId, categories }) => {
       throw new Error("Invalid category data");
     }
 
+
+    if (!answers.every(a => typeof a.value === 'number' && a.value >= -50 && a.value <= 50)) {
+      throw new Error(`Invalid answer value in category ${categoryId}`);
+    }
+
     // חישוב ממוצע האחוזים של התשובות בקטגוריה
-    const totalPercentage = answers.reduce((sum, answer) => sum + answer, 0);
+    const totalPercentage = answers.reduce((sum, answer) => sum + answer.value + 50, 0);
     const averagePercentage = totalPercentage / answers.length;
 
     return { categoryId, percentage: averagePercentage };
   });
 
-  const personalityTypeId = calculatePersonalityType(categoryResults);
-  const personalityTypeMatch = calculatePersonalityMatch(categoryResults);
+  const personalityTypeId = await calculatePersonalityType(categoryResults);
+  const personalityTypeMatch = await calculatePersonalityMatch(categoryResults);
 
   // יצירת אובייקט לתוצאה
   const result = {
-    userId,
-    testId,
+    userId: new mongoose.Types.ObjectId(userId),
+    testId: new mongoose.Types.ObjectId(testId),
     categoryResults: categoryResults,
     personalityTypeId,
     personalityTypeMatch,
@@ -39,7 +43,7 @@ const calculateAndSaveResult = async ({ userId, testId, categories }) => {
   // שמירה בבסיס הנתונים
   await saveUserTestResult(result);
   return result;
-};
+}
 
 const calculatePersonalityType = async (categoryResults) => {
   if (!Array.isArray(categoryResults) || categoryResults.length !== 4) {
@@ -51,20 +55,19 @@ const calculatePersonalityType = async (categoryResults) => {
     [categoryResults[0].categoryId]: ["E", "I"],
     [categoryResults[1].categoryId]: ["S", "N"],
     [categoryResults[2].categoryId]: ["T", "F"],
-    [categoryResults[3].categoryId]: ["J", "P"],
+    [categoryResults[3].categoryId]: ["J", "P"]
   };
 
   let personalityString = "";
 
-  categoryResults.forEach((category) => {
+  categoryResults.forEach(category => {
     const { categoryId, percentage } = category;
     if (!categoryMap[categoryId]) {
       throw new Error(`Unknown category ID: ${categoryId}`);
     }
 
-    // אם האחוז נמוך מ-50 בוחרים את האות הראשונה, אחרת את השנייה
-    personalityString +=
-      percentage < 50 ? categoryMap[categoryId][0] : categoryMap[categoryId][1];
+    // אם הערך נמוך מ-0 בוחרים את האות הראשונה, אחרת את השנייה
+    personalityString += percentage < 0 ? categoryMap[categoryId][0] : categoryMap[categoryId][1];
   });
 
   // חיפוש המזהה המתאים מה-DB
@@ -87,12 +90,7 @@ const calculatePersonalityMatch = (categoryResults) => {
 
   // חישוב ההתאמה לכל קטגוריה
   const totalMatch = categoryResults.reduce((sum, category) => {
-    return (
-      sum +
-      (category.percentage >= 50
-        ? category.percentage
-        : 100 - category.percentage)
-    );
+    return sum + (category.percentage >= 0 ? category.percentage + 50 : (100 - (50 + category.percentage)));
   }, 0);
 
   return totalMatch / 4;
