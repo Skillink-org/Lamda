@@ -1,8 +1,6 @@
 //Handles API requests and interactions with backend services.
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/users';
-import axios from "axios";
 const API_URL = "http://localhost:8080/api";
 
 // Register a new user
@@ -36,6 +34,8 @@ export const getUserStatus = async () => {
         console.error('Error fetching user status:', error);
         throw error;
     }
+} 
+
 // Example
 export const deleteUser = async (id) => {
   try {

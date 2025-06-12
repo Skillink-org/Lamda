@@ -37,7 +37,6 @@ function App() {
 
     //   {/* <Routing /> */}
     // </Router>
-    <HomePage></HomePage>
     //   {/* <Routing /> */}
     // </Router>
     <HomePage></HomePage>
