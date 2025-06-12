@@ -1,1 +1,78 @@
 //home page module style
+// Page wrapper styles for the dark blue textured background
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #0d3b6e;
+    position: relative;
+    
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 6px
+      );
+      z-index: -1;
+    }
+  }
+  
+  // Right side content styles
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 40px;
+    color: white;
+    
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    
+    p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      max-width: 500px;
+    }
+    
+    .yellow-line {
+      width: 80px;
+      height: 3px;
+      background-color: #f0b90b;
+      margin: 16px 0 24px;
+    }
+  }
+  
+  // Footer area with the three columns
+  .footer-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    color: #0d3b6e;
+    margin-top: auto;
+    
+    .footer-column {
+      text-align: center;
+      max-width: 300px;
+      
+      h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      
+      p {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+    }
+  }
