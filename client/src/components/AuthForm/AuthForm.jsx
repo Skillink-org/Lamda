@@ -19,7 +19,6 @@ const AuthForm = () => {
     setLoading(true);
     try {
       if (tabIndex === 0) {
-        // הרשמה
         if (!firstName || !lastName) {
           setError("נא למלא שם פרטי ושם משפחה");
           return;
@@ -33,7 +32,6 @@ const AuthForm = () => {
           alert("נרשמת בהצלחה!");
         }
       } else {
-        // התחברות
         const success = await loginUser(email, password);
         if (success) {
           alert("התחברת בהצלחה!");
