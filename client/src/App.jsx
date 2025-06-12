@@ -27,7 +27,17 @@ function App() {
     //   {/* </Router> */}
     //   <Header />
     //   <ExamPage />
+    // <Router>
+    //   <Routes>
+    //     <Route path="/:developerName" element={<TestPage />} />
+    //   </Routes>
+    //   {/* </Router> */}
+    //   <Header />
+    //   <ExamPage />
 
+    //   {/* <Routing /> */}
+    // </Router>
+    <HomePage></HomePage>
     //   {/* <Routing /> */}
     // </Router>
     <HomePage></HomePage>
