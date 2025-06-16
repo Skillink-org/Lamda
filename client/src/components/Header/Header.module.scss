@@ -35,6 +35,12 @@
     align-items: center;
     text-decoration: none;
     color: vars.$white;
+    outline: none;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
 
     img {
       height: 40px;
@@ -61,12 +67,24 @@
   text-decoration: none;
   font-weight: vars.$font-weight-medium;
   padding: 5px 10px;
+  outline: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
 }
 
 .profile {
   margin-left: 15%;
   display: flex;
   align-items: center;
+}
+
+.profileContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .profileText {
@@ -81,6 +99,56 @@
   align-items: center;
   color: vars.$white;
   text-decoration: none;
+  outline: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.loginButton {
+  background-color: vars.$gold;
+  color: vars.$primary-blue;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: vars.$font-weight-medium;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  outline: none;
+
+  &:hover {
+    background-color: lighten(vars.$gold, 10%);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.logoutButton {
+  background-color: transparent;
+  color: vars.$white;
+  border: 1px solid vars.$white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: vars.$font-weight-medium;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 12px;
+  outline: none;
+
+  &:hover {
+    background-color: vars.$white;
+    color: vars.$primary-blue;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
 }
 
 .active {

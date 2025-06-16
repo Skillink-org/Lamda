@@ -6,19 +6,15 @@ import EditModal from "../EditModal/EditModal";
 import AvatarIcon from '../AvatarIcon/AvatarIcon';
 import { FaCog } from "react-icons/fa";
 import { fetchUsers, updateUser } from '../../services/api';
+import { useUser } from '../../context/UserContext';
 
 
 const UserProfile = () => {
-
-  const [user, setUser] = useState({ "firstName": "ישראל", "lastName": "ישראלי" });
+  const { user, updateUser: updateUserContext } = useUser();
   const [isModalOpen, setModalOpen] = useState(false);
   const [userFields, setUserFields] = useState([]);
 
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
     getUsers();
   }, []);
 
@@ -51,9 +47,10 @@ const UserProfile = () => {
     }
   };
 
-  const handleUpdateUser = async (user) => {
+  const handleUpdateUser = async (userData) => {
     try {
-      const updatedUser = await updateUser(user);
+      const updatedUser = await updateUser(userData);
+      updateUserContext(updatedUser.user); // עדכון ה-context
       console.log("User updated successfully:", updatedUser);
     } catch (error) {
       console.error("Failed to update user:", error);
@@ -75,10 +72,10 @@ const UserProfile = () => {
         <div className={styles.sideSection}>
           <div className={styles.userProfile}>
             <div className={styles.avatarUser}>
-              <AvatarIcon firstName={user.firstName} lastName={user.lastName} size={90} ></AvatarIcon>
+              <AvatarIcon firstName={user?.firstName || ''} lastName={user?.lastName || ''} size={90} ></AvatarIcon>
             </div>
-            <h3>{user.firstName + " " + user.lastName} </h3>
-            <p>{user.created_at + " :הצטרף בתאריך"} </p>
+            <h3>{(user?.firstName || '') + " " + (user?.lastName || '')} </h3>
+            <p>{(user?.created_at || '') + " :הצטרף בתאריך"} </p>
             <button className={styles.editButton} onClick={() => setModalOpen(true)}>הגדרות פרופיל  <FaCog size={16} /> </button>
           </div>
         </div>

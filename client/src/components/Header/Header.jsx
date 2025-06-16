@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./Header.module.scss";
 import AvatarIcon from "../AvatarIcon/AvatarIcon";
 import logo from "../../assets/logo_book.png";
+import { logoutUser } from "../../services/api";
+import { useUser } from "../../context/UserContext";
 
 
 const Header = () => {
+    const navigate = useNavigate();
+    const { user, isLoggedIn, clearUser } = useUser();
 
-    const [isLoggedIn, setIsLoggedIn] = useState(true);
-    const [user, setUser] = useState({ "firstName": "sara", "lastName": "cohen" });
-
-    useEffect(() => {
-        const userData = localStorage.getItem("user");
-        if (userData) {
-            setIsLoggedIn(true);
-            setUser(JSON.parse(userData));
-        }
-    }, []);
+    const handleLogout = () => {
+        logoutUser();
+        clearUser();
+        navigate('/');
+    };
 
     return (
         <nav className={styles.navbar}>
@@ -42,14 +41,24 @@ const Header = () => {
                 </div>
                 <div className={styles.profile}>
                     {isLoggedIn ? (
-                        <NavLink to="/profile" className={styles.profileLink}>
-                            <span className={styles.profileText}>אזור אישי</span>
-                            <AvatarIcon firstName={user.firstName} lastName={user.lastName} size={40} />
-                        </NavLink>
+                        <div className={styles.profileContainer}>
+                            <NavLink to="/profile" className={styles.profileLink}>
+                                <span className={styles.profileText}>
+                                    שלום {user?.firstName || ''} {user?.lastName || ''}
+                                </span>
+                                <AvatarIcon 
+                                    firstName={user?.firstName || 'א'} 
+                                    lastName={user?.lastName || 'א'} 
+                                    size={40} 
+                                />
+                            </NavLink>
+                            <button onClick={handleLogout} className={styles.logoutButton}>
+                                התנתק
+                            </button>
+                        </div>
                     ) : (
-                        <NavLink to="/login">
-                            {/* generic button */}
-                            <button>התחברות / הרשמה</button>
+                        <NavLink to="/">
+                            <button className={styles.loginButton}>התחברות / הרשמה</button>
                         </NavLink>
                     )}
                 </div>

@@ -4,6 +4,7 @@ import { BookOpen, Mail, Lock, LogIn, UserPlus } from 'lucide-react';
 import styles from './HomePage.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { registerUser, loginUser } from '../../services/api';
+import { useUser } from '../../context/UserContext';
 
 const HomePage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +16,7 @@ const HomePage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { updateUser } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,12 +34,16 @@ const HomePage = () => {
         }
         const success = await registerUser(firstName, lastName, email, password);
         if (success) {
+          const userData = JSON.parse(localStorage.getItem('user') || '{}');
+          updateUser(userData);
           alert("נרשמת בהצלחה!");
           navigate('/instructions');
         }
       } else {
         const success = await loginUser(email, password);
         if (success) {
+          const userData = JSON.parse(localStorage.getItem('user') || '{}');
+          updateUser(userData);
           alert("התחברת בהצלחה!");
           navigate('/instructions');
         }

@@ -52,7 +52,7 @@ const loginUser = async (email, password) => {
         { expiresIn: '24h' }
     );
 
-    return token;
+    return { token, user };
 };
 
 const getAllUsers = async () => {

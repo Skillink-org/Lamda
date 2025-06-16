@@ -1,7 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './InstructionsPage.module.scss';
 
 const InstructionsPage = () => {
+  const navigate = useNavigate();
+
+  const handleStartExam = () => {
+    navigate('/exam');
+  };
+
   return (
     <div className={styles['instructions-page']}>
       <div className={styles.container}>
@@ -38,7 +45,7 @@ const InstructionsPage = () => {
         </section>
 
         <div className={styles.actions}>
-          <button className={styles.startButton}>התחל מבחן</button>
+          <button className={styles.startButton} onClick={handleStartExam}>התחל מבחן</button>
         </div>
       </div>
     </div>
