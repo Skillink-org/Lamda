@@ -1,0 +1,87 @@
+@use '../../styles/vars' as *;
+@use '../../styles/mixins' as *;
+
+.instructions-page {
+  @include page-style;
+  padding: 40px 20px;
+  min-height: calc(100vh - 80px);
+  background-color: $white;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: $white;
+  padding: 40px;
+  border-radius: 8px;
+  @include classic-border;
+}
+
+.title {
+  color: $primary-blue;
+  font-size: 2rem;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.section {
+  margin-bottom: 40px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+.sectionTitle {
+  color: $primary-blue;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid $gold;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    color: $primary-blue;
+    margin-bottom: 15px;
+    padding-right: 25px;
+    position: relative;
+    line-height: 1.5;
+
+    &:before {
+      content: '•';
+      color: $gold;
+      position: absolute;
+      right: 0;
+      font-size: 1.2em;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.actions {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.startButton {
+  background-color: $primary-blue;
+  color: $white;
+  border: 2px solid $gold;
+  padding: 12px 40px;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken($primary-blue, 5%);
+  }
+} 

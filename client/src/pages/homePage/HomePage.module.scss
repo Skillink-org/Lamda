@@ -1,78 +1,223 @@
-//home page module style
-// Page wrapper styles for the dark blue textured background
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #0d3b6e;
-    position: relative;
+@use "sass:color";
+@use '../../styles/vars' as *;
+@use '../../styles/mixins' as *;
+
+// Base Styles
+.home-page {
+  @include page-style;
+  width: 100%;
+  min-height: calc(100vh - 80px); // מפחית את גובה ה-Header
+  display: flex;
+  flex-direction: column;
+}
+
+// .container {
+//   max-width: 1200px;
+//   margin: 0 auto;
+//   padding: 0 24px;
+// }
+
+// Hero Section
+.hero-section {
+  background-color: $primary-blue;
+  background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e0c389' fill-opacity='0.1'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  color: $white;
+  padding: 80px 0;
+  width: 100%;
+  
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
     
-    &:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: repeating-linear-gradient(
-        -45deg,
-        rgba(255, 255, 255, 0.05),
-        rgba(255, 255, 255, 0.05) 2px,
-        transparent 2px,
-        transparent 6px
-      );
-      z-index: -1;
+    @media (min-width: 768px) {
+      grid-template-columns: 1fr 1fr;
     }
   }
   
-  // Right side content styles
-  .content-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px 40px;
-    color: white;
+  .hero-text {
+    text-align: right;
     
-    h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
+    .hero-title {
+      font-size: 2.25rem;
       font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.2;
+      color: $white;
     }
     
-    p {
-      font-size: 16px;
-      margin-bottom: 20px;
-      line-height: 1.5;
-      max-width: 500px;
+    .title-underline {
+      height: 4px;
+      width: 96px;
+      margin-bottom: 24px;
+      background-color: $gold;
     }
     
-    .yellow-line {
-      width: 80px;
-      height: 3px;
-      background-color: #f0b90b;
-      margin: 16px 0 24px;
+    .hero-description {
+      font-size: 1.25rem;
+      margin-bottom: 32px;
+      line-height: 1.6;
     }
   }
   
-  // Footer area with the three columns
-  .footer-section {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    color: #0d3b6e;
-    margin-top: auto;
+  .auth-card {
+    background-color: $white;
+    border-radius: 8px;
+    padding: 32px;
+    @include classic-border;
+    box-sizing: border-box;
     
-    .footer-column {
-      text-align: center;
-      max-width: 300px;
+    .auth-tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 32px;
       
-      h3 {
-        font-size: 18px;
-        margin-bottom: 10px;
+      .auth-tab {
+        padding: 8px 24px;
+        color: $primary-blue;
+        position: relative;
+        cursor: pointer;
+        
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 100%;
+          height: 2px;
+          background-color: $gold;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        
+        &.active:after {
+          opacity: 1;
+        }
+      }
+    }
+    
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      
+      .form-group {
+        .form-label {
+          display: block;
+          text-align: right;
+          margin-bottom: 8px;
+          color: $primary-blue;
+        }
+        
+        .input-wrapper {
+          position: relative;
+          width: 100%;
+          box-sizing: border-box;
+          
+          .form-input {
+            width: 100%;
+            padding: 12px;
+            padding-right: 40px;
+            border-radius: 4px;
+            border: 2px solid $gold;
+            text-align: right;
+            box-sizing: border-box;
+            
+            &::placeholder {
+              color: lighten($primary-blue, 40%);
+            }
+
+            &:focus {
+              outline: none;
+              border-color: $primary-blue;
+              box-shadow: 0 0 0 2px rgba($primary-blue, 0.1);
+            }
+          }
+          
+          .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            color: $primary-blue;
+          }
+        }
+      }
+
+      .error-text {
+        color: $danger;
+        font-size: $font-size-sm;
+        margin-top: -16px;
+        text-align: right;
       }
       
-      p {
-        font-size: 14px;
-        line-height: 1.4;
+      .submit-button {
+        width: 100%;
+        padding: 12px;
+        border-radius: 4px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $primary-blue;
+        color: $white;
+        border: 2px solid $gold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-sizing: border-box;
+        
+        &:hover:not(:disabled) {
+          background-color: darken($primary-blue, 5%);
+        }
+
+        &:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+        
+        .button-icon {
+          margin-left: 8px;
+        }
       }
     }
   }
+}
+
+// Features Section
+.features-section {
+  padding: 64px 0;
+  width: 100%;
+  
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .feature-item {
+      padding: 24px;
+      
+      .feature-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: $primary-blue;
+      }
+      
+      .feature-description {
+        color: $primary-blue;
+        line-height: 1.5;
+      }
+    }
+  }
+} 

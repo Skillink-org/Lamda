@@ -1,0 +1,100 @@
+@use 'vars' as vars;
+@use 'mixins' as mixins;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  direction: rtl;
+  font-family: vars.$font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: vars.$light-blue;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: vars.$gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  background: vars.$gray-400;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: vars.$gray-500;
+}
+
+/* Selection Styles */
+::selection {
+  background-color: vars.$gold;
+  color: vars.$primary-blue;
+}
+
+/* Focus Styles */
+:focus {
+  outline: 2px solid vars.$gold;
+  outline-offset: 2px;
+}
+
+/* Link Styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Button Reset */
+button {
+  border: none;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* List Reset */
+ul, ol {
+  list-style: none;
+}
+
+/* Image Reset */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Form Elements Reset */
+input, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Remove Number Input Spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove Autofill Background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+} 

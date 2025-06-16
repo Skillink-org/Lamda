@@ -6,7 +6,7 @@ const API_URL = "http://localhost:8080/api";
 // Register a new user
 export const registerUser = async (firstName, lastName, email, password) => {
     try {
-        const response = await axios.post(`${API_URL}/register`, { firstName, lastName, email, password });
+        const response = await axios.post(`${API_URL}/users/register`, { firstName, lastName, email, password });
         return response.status === 201;
     } catch (error) {
         console.error('Error registering user:', error);
@@ -17,8 +17,15 @@ export const registerUser = async (firstName, lastName, email, password) => {
 // Login a user
 export const loginUser = async (email, password) => {
     try {
-        const response = await axios.post(`${API_URL}/login`, { email, password });
-        return response.status === 200;
+        const response = await axios.post(`${API_URL}/users/login`, { email, password });
+        if (response.status === 200 && response.data.token) {
+            // Save token to localStorage
+            localStorage.setItem('token', response.data.token);
+            // Set default authorization header for all future requests
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+            return true;
+        }
+        return false;
     } catch (error) {
         console.error('Error logging in user:', error);
         throw error;
