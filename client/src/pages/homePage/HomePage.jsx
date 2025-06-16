@@ -83,7 +83,7 @@ const HomePage = () => {
 
             <form className={styles['auth-form']} onSubmit={handleSubmit}>
               {!isLogin && (
-                <>
+                <div className={styles['name-row']}>
                   <div className={styles['form-group']}>
                     <label className={styles['form-label']}>
                       שם פרטי
@@ -113,7 +113,7 @@ const HomePage = () => {
                       />
                     </div>
                   </div>
-                </>
+                </div>
               )}
 
               <div className={styles['form-group']}>
@@ -132,34 +132,52 @@ const HomePage = () => {
                 </div>
               </div>
 
-              <div className={styles['form-group']}>
-                <label className={styles['form-label']}>
-                  סיסמה
-                </label>
-                <div className={styles['input-wrapper']}>
-                  <input 
-                    type="password"
-                    className={styles['form-input']}
-                    placeholder="הזינו את הסיסמה שלכם"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <Lock className={styles['input-icon']} />
-                </div>
-              </div>
+              {!isLogin ? (
+                <div className={styles['password-row']}>
+                  <div className={styles['form-group']}>
+                    <label className={styles['form-label']}>
+                      סיסמה
+                    </label>
+                    <div className={styles['input-wrapper']}>
+                      <input 
+                        type="password"
+                        className={styles['form-input']}
+                        placeholder="הזינו את הסיסמה שלכם"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <Lock className={styles['input-icon']} />
+                    </div>
+                  </div>
 
-              {!isLogin && (
+                  <div className={styles['form-group']}>
+                    <label className={styles['form-label']}>
+                      אימות סיסמה
+                    </label>
+                    <div className={styles['input-wrapper']}>
+                      <input 
+                        type="password"
+                        className={styles['form-input']}
+                        placeholder="הזינו את הסיסמה בשנית"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                      />
+                      <Lock className={styles['input-icon']} />
+                    </div>
+                  </div>
+                </div>
+              ) : (
                 <div className={styles['form-group']}>
                   <label className={styles['form-label']}>
-                    אימות סיסמה
+                    סיסמה
                   </label>
                   <div className={styles['input-wrapper']}>
                     <input 
                       type="password"
                       className={styles['form-input']}
-                      placeholder="הזינו את הסיסמה בשנית"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="הזינו את הסיסמה שלכם"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <Lock className={styles['input-icon']} />
                   </div>
