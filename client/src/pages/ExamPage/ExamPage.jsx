@@ -5,6 +5,7 @@ import styles from './ExamPage.module.scss';
 import ProgressBar from './ProgressBar';
 import Question from './Question';
 import { fetchExamData, mapAnswersToResult } from './examHelpers';
+import { useUser } from '../../context/UserContext';
 
 export const ExamPage = () => {
     const [loading, setLoading] = useState(false);
@@ -12,9 +13,18 @@ export const ExamPage = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [questions, setQuestions] = useState([]);
     const [answersList, setAnswersList] = useState([]);
-    const [userId, setUserId] = useState("67e2c74109abcb517b28a627");//local storage משתנה זמני עד שיתעדכן מה 
     const [testId, setTestId] = useState(null);
     const navigate = useNavigate();
+    const { user, isLoggedIn } = useUser();
+    
+    useEffect(() => {
+        // בדיקת התחברות משתמש
+        if (!isLoggedIn || !user?._id) {
+            alert('נדרשת התחברות למערכת');
+            navigate('/');
+            return;
+        }
+    }, [navigate, isLoggedIn, user]);
     
     useEffect(() => {
         const fetchExam = async () => {
@@ -67,7 +77,7 @@ export const ExamPage = () => {
             try {
                 console.log("answersList");
                 console.log(answersList);
-                const payload = mapAnswersToResult(userId, testId, questions, answersList); // בניית האובייקט לשליחה
+                const payload = mapAnswersToResult(user._id, testId, questions, answersList); // בניית האובייקט לשליחה
                 console.log("האובייקט שיישלח לשרת:");
                 console.log(payload);
                 // שליחת התשובות לשרת

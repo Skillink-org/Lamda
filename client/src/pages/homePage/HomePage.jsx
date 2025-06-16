@@ -4,6 +4,7 @@ import { BookOpen, Mail, Lock, LogIn, UserPlus } from 'lucide-react';
 import styles from './HomePage.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { registerUser, loginUser } from '../../services/api';
+import { useUser } from '../../context/UserContext';
 
 const HomePage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +16,7 @@ const HomePage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { updateUser } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,12 +34,16 @@ const HomePage = () => {
         }
         const success = await registerUser(firstName, lastName, email, password);
         if (success) {
+          const userData = JSON.parse(localStorage.getItem('user') || '{}');
+          updateUser(userData);
           alert("נרשמת בהצלחה!");
           navigate('/instructions');
         }
       } else {
         const success = await loginUser(email, password);
         if (success) {
+          const userData = JSON.parse(localStorage.getItem('user') || '{}');
+          updateUser(userData);
           alert("התחברת בהצלחה!");
           navigate('/instructions');
         }
@@ -83,7 +89,7 @@ const HomePage = () => {
 
             <form className={styles['auth-form']} onSubmit={handleSubmit}>
               {!isLogin && (
-                <>
+                <div className={styles['name-row']}>
                   <div className={styles['form-group']}>
                     <label className={styles['form-label']}>
                       שם פרטי
@@ -113,7 +119,7 @@ const HomePage = () => {
                       />
                     </div>
                   </div>
-                </>
+                </div>
               )}
 
               <div className={styles['form-group']}>
@@ -132,34 +138,52 @@ const HomePage = () => {
                 </div>
               </div>
 
-              <div className={styles['form-group']}>
-                <label className={styles['form-label']}>
-                  סיסמה
-                </label>
-                <div className={styles['input-wrapper']}>
-                  <input 
-                    type="password"
-                    className={styles['form-input']}
-                    placeholder="הזינו את הסיסמה שלכם"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <Lock className={styles['input-icon']} />
-                </div>
-              </div>
+              {!isLogin ? (
+                <div className={styles['password-row']}>
+                  <div className={styles['form-group']}>
+                    <label className={styles['form-label']}>
+                      סיסמה
+                    </label>
+                    <div className={styles['input-wrapper']}>
+                      <input 
+                        type="password"
+                        className={styles['form-input']}
+                        placeholder="הזינו את הסיסמה שלכם"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                      <Lock className={styles['input-icon']} />
+                    </div>
+                  </div>
 
-              {!isLogin && (
+                  <div className={styles['form-group']}>
+                    <label className={styles['form-label']}>
+                      אימות סיסמה
+                    </label>
+                    <div className={styles['input-wrapper']}>
+                      <input 
+                        type="password"
+                        className={styles['form-input']}
+                        placeholder="הזינו את הסיסמה בשנית"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                      />
+                      <Lock className={styles['input-icon']} />
+                    </div>
+                  </div>
+                </div>
+              ) : (
                 <div className={styles['form-group']}>
                   <label className={styles['form-label']}>
-                    אימות סיסמה
+                    סיסמה
                   </label>
                   <div className={styles['input-wrapper']}>
                     <input 
                       type="password"
                       className={styles['form-input']}
-                      placeholder="הזינו את הסיסמה בשנית"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="הזינו את הסיסמה שלכם"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <Lock className={styles['input-icon']} />
                   </div>

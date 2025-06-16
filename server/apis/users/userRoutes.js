@@ -41,8 +41,18 @@ router.put("/updateUser/:id", async (req, res) => {
 router.post("/register", async (req, res) => {
     try {
       const { firstName, lastName, email, password } = req.body;
-      await registerUser(firstName, lastName, email, password);
-      res.status(201).json({ message: "User registered successfully" });
+      const newUser = await registerUser(firstName, lastName, email, password);
+      res.status(201).json({ 
+        message: "User registered successfully",
+        userId: newUser._id,
+        user: {
+          _id: newUser._id,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+          role: newUser.role
+        }
+      });
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
@@ -54,8 +64,19 @@ router.post("/login", async (req, res) => {
         if (!email || !password) {
             return res.status(400).json({ message: "Email and password are required" });
         }
-        const token = await loginUser(email, password);
-        res.status(200).json({ message: "Login successful", token });
+        const { token, user } = await loginUser(email, password);
+        res.status(200).json({ 
+            message: "Login successful", 
+            token, 
+            userId: user._id,
+            user: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                role: user.role
+            }
+        });
     } catch (error) {
         res.status(401).json({ message: error.message });
     }
