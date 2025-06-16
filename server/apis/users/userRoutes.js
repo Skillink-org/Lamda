@@ -1,7 +1,7 @@
 //user routes
 const express = require('express');
 const router = express.Router();
-const {registerUser,updateUser,getAllUsers} = require('./userService');
+const {registerUser,updateUser,getAllUsers, loginUser} = require('./userService');
 
 
 // router.put("/updateUser/:id", async (req, res) => {
@@ -48,7 +48,20 @@ router.post("/register", async (req, res) => {
     }
   });
 
-  router.get("/getAllUsers", async (req, res) => {
+router.post("/login", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required" });
+        }
+        const token = await loginUser(email, password);
+        res.status(200).json({ message: "Login successful", token });
+    } catch (error) {
+        res.status(401).json({ message: error.message });
+    }
+});
+
+router.get("/getAllUsers", async (req, res) => {
     try {
         const users = await getAllUsers();
         res.status(200).json(users);

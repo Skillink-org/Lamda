@@ -244,3 +244,13 @@
       transition: width 0.3s ease;
     }
   }
+
+  //page style 
+  @mixin page-style {
+      min-height: 100vh;
+      font-family: Frank Ruhl Libre, serif;
+      background-color: #d1e6f7;
+      background-image: linear-gradient(to bottom, #d1e6f7, #fff);
+      direction: rtl;
+      padding: 20px;
+  }
