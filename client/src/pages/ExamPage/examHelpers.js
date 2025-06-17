@@ -6,6 +6,12 @@ export const fetchExamData = async () => {
 };
 
 export const mapAnswersToResult = (userId, testId, questions, answersList) => {
+    console.log("mapAnswersToResult called with:");
+    console.log("userId:", userId);
+    console.log("testId:", testId);
+    console.log("questions count:", questions.length);
+    console.log("answersList:", answersList);
+    
     const result = {
         userId: userId,
         testId: testId,
@@ -13,16 +19,25 @@ export const mapAnswersToResult = (userId, testId, questions, answersList) => {
     };
 
     questions.forEach((question, index) => {
+        const answer = answersList[index];
+        console.log(`Question ${index}: categoryId=${question.categoryId}, answer=`, answer);
+        
+        if (!answer) {
+            console.warn(`Missing answer for question ${index}`);
+            return;
+        }
+        
         const category = result.categories.find(cat => cat.categoryId === question.categoryId);
         if (category) {
-            category.answers.push(answersList[index]);// הוספת התשובה שנבחרה
+            category.answers.push(answer);// הוספת התשובה שנבחרה
         } else {
             result.categories.push({
                 categoryId: question.categoryId,
-                answers: [answersList[index]]// הוספת תשובה חדשה
+                answers: [answer]// הוספת תשובה חדשה
             });
         }
     });
 
+    console.log("Final result:", result);
     return result;
 };

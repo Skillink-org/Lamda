@@ -136,7 +136,7 @@ export const sendDataOfContactPage = async (data) => {
 // Get user test results
 export const getUserTestResults = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}/results/getUserResults/${userId}`);
+    const response = await axios.get(`${API_URL}/results/getResult/${userId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching user test results:', error);

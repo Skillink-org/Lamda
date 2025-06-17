@@ -1,104 +1,258 @@
-@use '../../styles/mixins' as mixins;
-@use '../../styles/vars' as vars;
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&display=swap');
 
-.examCard{
-    @include mixins.card;
-    margin:20px;
-  }
+// Variables
+$primary-blue: #01395e;
+$light-blue: #d1e6f7;
+$gold: #e0c389;
+$white: #ffffff;
+$font-family: 'Frank Ruhl Libre', serif;
 
-  .answerCard {
-    @include mixins.card;
-    //background-color:vars.$light-blue;צבע הרקע במצב בחירה
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row-reverse;
-    margin:20px;
-    font-weight: vars.$font-weight-medium;
-    color: vars.$primary-blue-light;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease-out, transform 0.2s ease; // כולל גם שינוי בקנה מידה
-    //@include mixins.transition();
-    @include mixins.classic-border;
+// Mixins
+@mixin classic-border {
+  border: 2px solid $gold;
+  box-shadow: 0 0 0 1px $primary-blue;
+}
+
+@mixin transition($property: all, $duration: 0.3s, $timing: ease) {
+  transition: $property $duration $timing;
+}
+
+// Base Styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.examPage {
+  min-height: 100vh;
+  font-family: $font-family;
+  background-color: $light-blue;
+  background-image: linear-gradient(to bottom, $light-blue, $white);
+  direction: rtl;
+}
+
+// Main Content Styles
+.mainContent {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+// Question Card Styles
+.questionCard {
+  background-color: $white;
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+  @include classic-border;
+  
+  .questionHeader {
+    text-align: center;
+    margin-bottom: 32px;
     
-    &:focus {
-      @include mixins.focus-ring;
-    }
-    &:hover {
-      box-shadow: 0px 4px 10px rgba(125, 124, 124, 0.0);// הצל נכנס חזרה
-      transform: translateY(-3px);
-    }
-  }
-  // כאשר התשובה נבחרה
-  .selected {
-    background-color: vars.$light-blue; // צבע הרקע
-    border: 2px solid vars.$primary-blue;// שינוי צבע הטקסט
-    box-shadow: none;
-}
-
-.radioCustom {
-  display: inline-block;
-  width: 20px; // גודל הכפתור
-  height: 20px; // גובה הכפתור
-  border: 2px solid vars.$gold; // צבע הגבול
-  border-radius: 50%; // הופך את הכפתור לעגלגל
-  position: relative;
-}
-input[type="radio"] {
-  display: none; // הסתרת כפתורי הבחירה המקוריים
-}
-
-input[type="radio"]:checked + .radioCustom {
-  background-color: vars.$light-blue;// צבע הרקע כאשר נבחר
-}
-input[type="radio"]:checked + .answerCard {
-  background-color: vars.$light-blue-dark;
-}
-.radioCustom:after {
-  content: '';
-  display: none;
-  width: 10px; // גודל הנקודה הפנימית
-  height: 10px; // גובה הנקודה הפנימית
-  background-color: white; // צבע הנקודה הפנימית
-  border-radius: 50%; // הופך את הנקודה לעגלגלית
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); // מרכז את הנקודה
-}
-
-input[type="radio"]:checked + .radioCustom:after {
-  display: block; // מראה את הנקודה כאשר הכפתור נבחר
-}
-
-  .h1{
-    @include mixins.heading-3;
-
-    @include mixins.decorative-underline;
-    &:after {
-      width: 100px;
-      margin-right: auto;
-      margin-left: auto;
+    .questionTitle {
+      font-size: 24px;
+      font-weight: 700;
+      color: $primary-blue;
+      margin-bottom: 8px;
     }
     
+    .titleUnderline {
+      height: 4px;
+      width: 96px;
+      margin: 16px auto 0;
+      background-color: $gold;
+    }
   }
-  .buttonBar{
+}
+
+// Options Styles
+.optionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.optionBox {
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  @include classic-border;
+  opacity: 0.8;
+  @include transition;
+  background-color: $white;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    background-color: lighten($light-blue, 5%);
+  }
+  
+  &.selected {
+    background-color: $light-blue;
+    border-color: $primary-blue;
+    opacity: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .optionContent {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 30px;
+    justify-content: space-between;
+    
+    .optionLabel {
+      font-size: 18px;
+      color: $primary-blue;
+    }
+    
+    .optionCircle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid $gold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      
+      .optionBox.selected & {
+        border-color: $primary-blue;
+        background-color: $primary-blue;
+      }
+      
+      .optionCircleInner {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: $white;
+      }
+    }
   }
-  .primaryButton{
-    @include mixins.primary-button;
-   // margin: 30px;
+}
+
+// Navigation Buttons
+.navigationButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.prevButton, .nextButton {
+  display: flex;
+  align-items: center;
+  padding: 8px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  @include transition;
+  font-family: $font-family;
+}
+
+.prevButton {
+  color: $primary-blue;
+  border: 2px solid $gold;
+  background-color: transparent;
+  
+  &:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
-  .secondaryButton{
-    @include mixins.secondary-button;
-   // margin: 30px;
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
-  .line{
-    @include mixins.decorative-underline;
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none;
+      background-color: transparent;
+    }
   }
-  .progress{
-    margin:20px;
-    @include mixins.progress-bar
+}
+
+.nextButton {
+  color: $white;
+  background-color: $primary-blue;
+  border: 2px solid $gold;
+  
+  &:hover {
+    background-color: darken($primary-blue, 5%);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
+  
+  &:active {
+    transform: translateY(0);
+    background-color: lighten($primary-blue, 5%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.chevronIcon {
+  width: 20px;
+  height: 20px;
+}
+
+// Progress Bar
+.progressContainer {
+  margin-top: 32px;
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: $primary-blue;
+  font-weight: 500;
+}
+
+.progressBar {
+  height: 8px;
+  width: 100%;
+  background-color: $light-blue;
+  border-radius: 9999px;
+  position: relative;
+  
+  .progressFill {
+    height: 100%;
+    background-color: rgba($primary-blue, 0.3);
+    border-radius: 9999px;
+    transition: width 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .answeredFill {
+    height: 100%;
+    background-color: $primary-blue;
+    border-radius: 9999px;
+    transition: width 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+}
+
+// Loading Styles
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: $primary-blue;
+  padding: 40px;
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import axios from 'axios';
 import styles from './ExamPage.module.scss';
 import ProgressBar from './ProgressBar';
@@ -69,22 +70,31 @@ export const ExamPage = () => {
             setSelectedAnswer(answersList[currentQuestionIndex + 1] || null); // לאפס את התשובה הנבחרת כשעוברים לשאלה הבאה
         } else {
             // ווידוא שכל השאלות מולאו
-            if (answersList.length < questions.length) {
-                alert('נא למלא את כל השאלות לפני שליחה.');
+            const unansweredQuestionIndex = questions.findIndex((_, index) => !answersList[index]);
+            if (unansweredQuestionIndex !== -1) {
+                alert(`נא למלא את כל השאלות לפני שליחה. עובר לשאלה ${unansweredQuestionIndex + 1} שלא נענתה.`);
+                setCurrentQuestionIndex(unansweredQuestionIndex);
+                setSelectedAnswer(answersList[unansweredQuestionIndex] || null);
                 return;
             }
             setLoading(true); // הפעלת מצב טעינה
             try {
-                console.log("answersList");
+                console.log("answersList:");
                 console.log(answersList);
                 const payload = mapAnswersToResult(user._id, testId, questions, answersList); // בניית האובייקט לשליחה
                 console.log("האובייקט שיישלח לשרת:");
                 console.log(payload);
+                console.log("Categories in detail:");
+                payload.categories.forEach((cat, index) => {
+                    console.log(`Category ${index}:`, cat);
+                    console.log(`  categoryId: ${cat.categoryId}`);
+                    console.log(`  answers:`, cat.answers);
+                });
                 // שליחת התשובות לשרת
                 const response = await axios.post('http://localhost:8080/api/results/saveResult', payload);
                 console.log(response);
-                if (response.status === 200) {
-                    navigate('/resultsPage');// אם הבקשה הצליחה, נווט לעמוד תוצאות
+                if (response.status === 201) {
+                    navigate('/results');// אם הבקשה הצליחה, נווט לעמוד תוצאות
                 } else {
                     alert('הייתה בעיה בשמירת התשובות, אנא נסה שוב.');
                 }
@@ -97,19 +107,39 @@ export const ExamPage = () => {
     };
 
     return (
-        <>
-            {loading && <div>טוען...</div>} {/* תצוגת טעינה */}
-            <div>
+        <div className={styles.examPage}>
+            {loading && <div className={styles.loading}>טוען...</div>} {/* תצוגת טעינה */}
+            
+            <main className={styles.mainContent}>
                 <Question
                     question={questions[currentQuestionIndex]}
                     selectedAnswer={selectedAnswer}
                     onAnswerChange={handleAnswerChange}
                 />
-                <div className='buttonBar' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '30px' }}>
-                    <button onClick={onPrev} className={styles.prevButton} disabled={currentQuestionIndex === 0} >{"< שאלה קודמת"} </button>
-                    <button onClick={onNext} className={styles.nextButton}>{currentQuestionIndex < questions.length - 1 ? "שאלה הבאה >" : "סיום מבחן"}</button>
+                
+                {/* Navigation Buttons */}
+                <div className={styles.navigationButtons}>
+                    <button 
+                        onClick={onPrev} 
+                        className={styles.prevButton} 
+                        disabled={currentQuestionIndex === 0}
+                    >
+                        <ChevronRight className={styles.chevronIcon} />
+                        שאלה קודמת
+                    </button>
+                    <button onClick={onNext} className={styles.nextButton}>
+                        {currentQuestionIndex < questions.length - 1 ? "שאלה הבאה" : 
+                         `סיום מבחן (${answersList.filter(answer => answer !== undefined && answer !== null).length}/${questions.length})`}
+                        <ChevronLeft className={styles.chevronIcon} />
+                    </button>
                 </div>
-                <ProgressBar currentQuestion={currentQuestionIndex + 1} totalQuestions={questions.length} />
-            </div>
-        </>)
+                
+                <ProgressBar 
+                    currentQuestion={currentQuestionIndex + 1} 
+                    totalQuestions={questions.length}
+                    answeredCount={answersList.filter(answer => answer !== undefined && answer !== null).length}
+                />
+            </main>
+        </div>
+    );
 };
