@@ -13,29 +13,31 @@ const Question = ({ question, selectedAnswer, onAnswerChange }) => {
     if (!question) return null;
 
     return (
-        <div className={styles.examCard}>
-            <h1 className={styles.h1}>{question.text}</h1>
-            <form>
+        <div className={styles.questionCard}>
+            <div className={styles.questionHeader}>
+                <h2 className={styles.questionTitle}>{question.text}</h2>
+                <div className={styles.titleUnderline}></div>
+            </div>
+
+            {/* Answer Options */}
+            <div className={styles.optionsContainer}>
                 {options.map((option, index) => (
-                    <label
-                        className={`${styles.answerCard} ${selectedAnswer === option ? styles.selected : ''}`}
+                    <div
                         key={index}
-                        htmlFor={`option${index}`}
+                        onClick={() => onAnswerChange(option)}
+                        className={`${styles.optionBox} ${selectedAnswer?.value === option.value ? styles.selected : ''}`}
                     >
-                        <input className={styles.option}
-                            type="radio"
-                            id={`option${index}`}
-                            name="quiz"
-                            value={option.text}
-                            checked={selectedAnswer === option.text}
-                            onChange={() => onAnswerChange(option)}
-                            aria-label={`בחר תשובה: ${option.text}`}
-                        />
-                        <span className={styles.radioCustom}></span>
-                        {option.text}
-                    </label>
+                        <div className={styles.optionContent}>
+                            <span className={styles.optionLabel}>{option.text}</span>
+                            <div className={styles.optionCircle}>
+                                {selectedAnswer?.value === option.value && (
+                                    <div className={styles.optionCircleInner}></div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 ))}
-            </form>
+            </div>
         </div>
     );
 };

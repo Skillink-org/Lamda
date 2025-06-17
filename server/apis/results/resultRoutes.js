@@ -5,9 +5,13 @@ const { calculateAndSaveResult, getResultAndRecommendations } = require("./resul
 
 router.post("/saveResult", async (req, res) => {
     try {
+        console.log("Received saveResult request with body:", req.body);
         const result = await calculateAndSaveResult(req.body);
+        console.log("Result calculated successfully, sending response");
         res.status(201).json(result);
     } catch (error) {
+        console.error("Error in saveResult route:", error);
+        console.error("Error stack:", error.stack);
         res.status(500).json({ error: error.message });
     }
     

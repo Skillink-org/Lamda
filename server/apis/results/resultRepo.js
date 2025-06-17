@@ -15,10 +15,11 @@ const getPersonalityTypeByString = async (personalityString) => {
 // שליפת תוצאות  לפי משתמש
 const getResultByUserId = async (userId) => {
     try {
-    
-        const result = await Result.findOne({ userId,isComplete: true });
+        // מחזיר את התוצאה האחרונה (הכי עדכנית) לפי תאריך יצירה
+        const result = await Result.findOne({ userId, isComplete: true })
+            .sort({ createdAt: -1 });
 
-        console.log("finde one:",result);
+        console.log("Latest result found:", result);
 
         return result;  
     } catch (error){
