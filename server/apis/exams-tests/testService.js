@@ -1,10 +1,15 @@
 //test service
 
-const { getTestByName } = require("./testRepo");
+const { getTestByCode, getAllTests } = require("./testRepo");
 
-const getTest = async (name) => {
-  const test = await getTestByName(name);
+const getTest = async (code) => {
+  const test = await getTestByCode(code);
   return test;
 };
 
-module.exports = { getTest };
+const getAll = async () => {
+    const tests = await getAllTests();
+    return tests;
+}
+
+module.exports = { getTest, getAll };

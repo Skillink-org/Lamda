@@ -1,12 +1,26 @@
 //Handles API requests and interactions with backend services.
 import axios from 'axios';
 
-const API_URL = "http://localhost:8080/api";
+const api = axios.create({
+  baseURL: "http://localhost:8080/api"
+});
+
+// Add a request interceptor to include the token in headers
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
 
 // Register a new user
 export const registerUser = async (firstName, lastName, email, password) => {
     try {
-        const response = await axios.post(`${API_URL}/users/register`, { firstName, lastName, email, password });
+        const response = await api.post(`/users/register`, { firstName, lastName, email, password });
         if (response.status === 201) {
             // Save userId to localStorage after successful registration
             if (response.data.userId) {
@@ -32,7 +46,7 @@ export const registerUser = async (firstName, lastName, email, password) => {
 // Login a user
 export const loginUser = async (email, password) => {
     try {
-        const response = await axios.post(`${API_URL}/users/login`, { email, password });
+        const response = await api.post(`/users/login`, { email, password });
         if (response.status === 200 && response.data.token) {
             // Save token and userId to localStorage
             localStorage.setItem('token', response.data.token);
@@ -44,8 +58,6 @@ export const loginUser = async (email, password) => {
                 const { password, ...userWithoutPassword } = response.data.user;
                 localStorage.setItem('user', JSON.stringify(userWithoutPassword));
             }
-            // Set default authorization header for all future requests
-            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
             return true;
         }
         return false;
@@ -58,7 +70,7 @@ export const loginUser = async (email, password) => {
 // Get user authentication status
 export const getUserStatus = async () => {
     try {
-        const response = await axios.get(`${API_URL}/status`, { withCredentials: true });
+        const response = await api.get(`/status`, { withCredentials: true });
         return response.data; // { message, userId, role }
     } catch (error) {
         console.error('Error fetching user status:', error);
@@ -69,7 +81,7 @@ export const getUserStatus = async () => {
 // Example
 export const deleteUser = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/xxxx/${id}`);
+    const response = await api.delete(`/xxxx/${id}`);
     return response.status === 200;
   } catch (error) {
     console.error("Error deleting user:", error);
@@ -80,7 +92,7 @@ export const deleteUser = async (id) => {
 // function for user profile
 export const fetchUsers = async () => {
   try {
-    const response = await axios.get(`${API_URL}/users/getAllUsers`);
+    const response = await api.get(`/users/getAllUsers`);
     return response.data;
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -95,7 +107,7 @@ export const updateUser = async (user) => {
   }
   
   try {
-    const response = await axios.put(`${API_URL}/users/updateUser/${userId}`, {
+    const response = await api.put(`/users/updateUser/${userId}`, {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
@@ -118,7 +130,7 @@ export const updateUser = async (user) => {
 export const sendDataOfContactPage = async (data) => {
   try {
     
-    await axios.post(API_URL, data, {
+    await api.post(null, data, {
       headers: { "Content-Type": "application/json" },
     });
 
@@ -136,7 +148,7 @@ export const sendDataOfContactPage = async (data) => {
 // Get user test results
 export const getUserTestResults = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}/results/getResult/${userId}`);
+    const response = await api.get(`/results/getResult/${userId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching user test results:', error);
@@ -149,8 +161,6 @@ export const logoutUser = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('user');
-    // Remove authorization header
-    delete axios.defaults.headers.common['Authorization'];
 };
 
 // Get current user from localStorage
@@ -165,3 +175,5 @@ export const isUserLoggedIn = () => {
     const userId = localStorage.getItem('userId');
     return !!(token && userId);
 };
+
+export default api;
