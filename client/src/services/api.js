@@ -100,6 +100,17 @@ export const fetchUsers = async () => {
   }
 };
 
+// New function to get user profile statistics
+export const getUserProfileStats = async (userId) => {
+  try {
+    const response = await api.get(`/users/profile/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user profile stats:", error);
+    throw error;
+  }
+};
+
 export const updateUser = async (user) => {
   const userId = localStorage.getItem('userId'); // קבלת userId מ-localStorage
   if (!userId) {
@@ -129,17 +140,16 @@ export const updateUser = async (user) => {
 
 export const sendDataOfContactPage = async (data) => {
   try {
-    
-    await api.post(null, data, {
+    const response = await api.post('/contact', data, {
       headers: { "Content-Type": "application/json" },
     });
 
-    return { success: true, message:"Recieved Successfully" };
+    return { success: true, message: response.data.message || "הודעתך נשלחה בהצלחה!" };
   } catch (error) {
-    console.error("Error on sending page:", error);
+    console.error("Error on sending contact form:", error);
     
     const errorMessage =
-      error.response?.data?.message || "Error on sending page";
+      error.response?.data?.message || "שגיאה בשליחת ההודעה. נסה שוב מאוחר יותר.";
 
     return { success: false, message: errorMessage };
   }

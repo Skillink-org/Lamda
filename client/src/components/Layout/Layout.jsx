@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from '../Header/Header';
 import HomePage from '../../pages/homePage/HomePage';
+import AboutPage from '../../pages/aboutPage/AboutPage';
 import InstructionsPage from '../../pages/instructionsPage/InstructionsPage';
 import ContactPage from '../../pages/contactPage/ContactPage';
 import ExamSelectionPage from '../../pages/examSelectionPage/ExamSelectionPage'; // Import the new selection page
@@ -18,6 +19,7 @@ const Layout = () => {
       <main className={styles.main}>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/instructions" element={
             <ProtectedRoute>
               <InstructionsPage />

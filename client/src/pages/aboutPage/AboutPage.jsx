@@ -1,89 +1,138 @@
-import styles from "../aboutPage/AboutPage.module.scss";
 import React from 'react';
-import IconAndTitle from "../../components/IconAndTitle/IconAndTitle";
-import { Target, Star, Book, Users } from "lucide-react";
+import { Target, Book, Users, Star } from 'lucide-react';
+import styles from './AboutPage.module.scss';
 
-const missionVisionData = [
-  { icon: <Target />, title: "המטרה שלנו", description: "לסייע לכל לומד למצוא את דרך הלימוד המתאימה לו ביותר, תוך התחשבות במאפייניו האישיים וסגנון הלמידה הטבעי שלו." },
-  { icon: <Star />, title: "החזון שלנו", description: "ליצור עולם תורני בו כל לומד מממש את הפוטנציאל המלא שלו בלימוד, מתוך הבנה והתאמה אישית." }
-
-];
-
-const testProcessSteps = [
-  { title: "התחלת המבחן", position: "left" },
-  { title: "מענה על השאלות", position: "right" },
-  { title: "עיבוד התוצאות", position: "left" },
-  { title: "קבלת מסקנות והמלצות מותאמות אישית", position: "right" }
-];
-
-const advantagesData = [
-  { icon: <Target />, title: "דיוק מרבי", description: "תוצאות מדויקות ומותאמות אישית" },
-  { icon: <Book />, title: "המלצות מעשיות", description: "כלים פרקטיים לשיפור הלמידה" },
-  { icon: <Users />, title: "ליווי מתמשך", description: "תמיכה והכוונה לאורך כל הדרך" }
-];
-
-
-const About = () => {
+const AboutPage = () => {
   return (
-    <div className={styles["main-content"]}>
-      <div className={styles["about-page"]}>
-        <div className={styles["about-card"]}>
-          <h2>אודות המיזם</h2>
-          <p>
-            מיזם "מבחן התאמה תורני" נוסד מתוך הבנה עמוקה כי כל אדם הוא עולם מלא, וכי דרך הלימוד המתאימה לאחד אינה מתאימה לאחר.
-            מטרתנו היא לסייע לכל לומד למצוא את הדרך המיטבית עבורו בלימוד התורה.
-          </p>
+    <div className={styles.aboutPage}>
+      <main className={styles.mainContent}>
+        {/* About Card */}
+        <div className={styles.aboutCard}>
+          <div className={styles.pageHeader}>
+            <h2 className={styles.pageTitle}>
+              אודות המיזם
+            </h2>
+            <div className={styles.titleUnderline}></div>
+          </div>
+
+          <div className={styles.aboutText}>
+            <p>
+              מיזם "מבחן התאמה תורני" נוסד מתוך הבנה עמוקה כי כל אדם הוא עולם מלא, וכי דרך הלימוד המתאימה לאחד אינה מתאימה לאחר. מטרתנו היא לסייע לכל לומד למצוא את הדרך המיטבית עבורו בלימוד התורה.
+            </p>
+          </div>
         </div>
 
-        <div className={styles["mission-vision-grid"]}>
-          {missionVisionData.map((item, index) => (
-            <div key={index} className={styles["card"]}>
-              <IconAndTitle icon={item.icon} title={item.title} />
-              <p>{item.description}</p>
+        {/* Mission and Vision */}
+        <div className={styles.missionVisionGrid}>
+          <div className={styles.infoCard}>
+            <div className={styles.iconContainer}>
+              <Target className={styles.cardIcon} />
             </div>
-          ))}
+            <h3 className={styles.cardTitle}>
+              המטרה שלנו
+            </h3>
+            <p className={styles.cardText}>
+              לסייע לכל לומד למצוא את דרך הלימוד המתאימה לו ביותר, תוך התחשבות במאפייניו האישיים וסגנון הלמידה הטבעי שלו.
+            </p>
+          </div>
+
+          <div className={styles.infoCard}>
+            <div className={styles.iconContainer}>
+              <Star className={styles.cardIcon} />
+            </div>
+            <h3 className={styles.cardTitle}>
+              החזון שלנו
+            </h3>
+            <p className={styles.cardText}>
+              ליצור עולם תורני בו כל לומד מממש את הפוטנציאל המלא שלו בלימוד, מתוך הבנה והתאמה אישית.
+            </p>
+          </div>
         </div>
 
-        <div className={styles["about-card"]}>
-          <h3> תהליך המבחן</h3>
-          <div className={styles["timeline-container"]}>
-            <div className={styles["timeline-items"]}>
-              {testProcessSteps.map((step, index) => (
-                <div key={index} className={styles["timeline-item"]}>
-                  {step.position === "left" && (
-                    <>
-                      <div className={`${styles["timeline-content"]} ${styles["left"]}`}>
-                        <div className={styles["timeline-box"]}>
-                          <h4>{step.title}</h4>
-                        </div>
-                      </div>
-                      <div className={styles["timeline-spacer"]}></div>
-                    </>
-                  )}
-                  {step.position === "right" && (
-                    <>
-                      <div className={styles["timeline-spacer"]}></div>
-                      <div className={`${styles["timeline-content"]} ${styles["right"]}`}>
-                        <div className={styles["timeline-box"]}>
-                          <h4>{step.title}</h4>
-                        </div>
-                      </div>
-                    </>
-                  )}
+        {/* Development Process */}
+        <div className={styles.processCard}>
+          <h3 className={styles.sectionTitle}>
+            תהליך הפיתוח
+          </h3>
+          <div className={styles.timelineContainer}>
+            <div className={styles.timelineItems}>
+              <div className={styles.timelineItem}>
+                <div className={`${styles.timelineContent} ${styles.left}`}>
+                  <div className={styles.timelineBox}>
+                    <h4 className={styles.timelineTitle}>מחקר מקיף</h4>
+                    <p className={styles.timelineText}>
+                      ניתוח מעמיק של שיטות לימוד מסורתיות ומודרניות
+                    </p>
+                  </div>
                 </div>
-              ))}
+                <div className={styles.timelineSpacer}></div>
+              </div>
+              
+              <div className={styles.timelineItem}>
+                <div className={styles.timelineSpacer}></div>
+                <div className={`${styles.timelineContent} ${styles.right}`}>
+                  <div className={styles.timelineBox}>
+                    <h4 className={styles.timelineTitle}>פיתוח המודל</h4>
+                    <p className={styles.timelineText}>
+                      יצירת מודל ייחודי המשלב ידע תורני עם כלים פסיכומטריים
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className={styles.timelineItem}>
+                <div className={`${styles.timelineContent} ${styles.left}`}>
+                  <div className={styles.timelineBox}>
+                    <h4 className={styles.timelineTitle}>בדיקות והתאמות</h4>
+                    <p className={styles.timelineText}>
+                      ביצוע מחקרי תיקוף ושיפור מתמיד של המערכת
+                    </p>
+                  </div>
+                </div>
+                <div className={styles.timelineSpacer}></div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className={styles["card-advantages"]}>
-          {advantagesData.map((item, index) => (
-            <IconAndTitle key={index} icon={item.icon} title={item.title} description={item.description} />
-          ))}
+        {/* Benefits */}
+        <div className={styles.benefitsCard}>
+          <h3 className={styles.sectionTitle}>
+            היתרונות של המבחן
+          </h3>
+          <div className={styles.benefitsGrid}>
+            <div className={styles.benefitItem}>
+              <div className={styles.iconContainer}>
+                <Target className={styles.benefitIcon} />
+              </div>
+              <h4 className={styles.benefitTitle}>דיוק מרבי</h4>
+              <p className={styles.benefitText}>
+                תוצאות מדויקות ומותאמות אישית
+              </p>
+            </div>
+            <div className={styles.benefitItem}>
+              <div className={styles.iconContainer}>
+                <Book className={styles.benefitIcon} />
+              </div>
+              <h4 className={styles.benefitTitle}>המלצות מעשיות</h4>
+              <p className={styles.benefitText}>
+                כלים פרקטיים לשיפור הלמידה
+              </p>
+            </div>
+            <div className={styles.benefitItem}>
+              <div className={styles.iconContainer}>
+                <Users className={styles.benefitIcon} />
+              </div>
+              <h4 className={styles.benefitTitle}>ליווי מתמשך</h4>
+              <p className={styles.benefitText}>
+                תמיכה והכוונה לאורך כל הדרך
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
 
-export default About;
+export default AboutPage;
