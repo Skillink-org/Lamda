@@ -4,6 +4,7 @@ import Header from '../Header/Header';
 import HomePage from '../../pages/homePage/HomePage';
 import InstructionsPage from '../../pages/instructionsPage/InstructionsPage';
 import ContactPage from '../../pages/contactPage/ContactPage';
+import ExamSelectionPage from '../../pages/examSelectionPage/ExamSelectionPage'; // Import the new selection page
 import { ExamPage } from '../../pages/ExamPage/ExamPage';
 import ConclusionPage from '../../pages/conclusionPage/ConclusionPage';
 import UserProfile from '../UserProfile/UserProfile';
@@ -23,7 +24,14 @@ const Layout = () => {
             </ProtectedRoute>
           } />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/exam" element={
+          {/* Renamed /exam to /tests for the selection page */}
+          <Route path="/tests" element={
+            <ProtectedRoute>
+              <ExamSelectionPage />
+            </ProtectedRoute>
+          } />
+          {/* Added new dynamic route for a specific exam */}
+          <Route path="/exam/:testCode" element={
             <ProtectedRoute>
               <ExamPage />
             </ProtectedRoute>

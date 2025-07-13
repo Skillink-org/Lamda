@@ -4,10 +4,9 @@ const Test = require("../../models/testModel");
 const Category = require("../../models/categoryModel");
 const Question = require("../../models/questionModel");
 
-const getTestByName = async (name = "MBTI להתאמת סגנון לימוד תורני") => {
+const getTestByCode = async (code) => {
   try {
-    // Fetching the exam by name
-    const test = await Test.findOne({ name });
+    const test = await Test.findOne({ code });
 
     if (!test) {
       throw new Error("Test not found");
@@ -49,4 +48,15 @@ const getTestByName = async (name = "MBTI להתאמת סגנון לימוד ת�
   }
 };
 
-module.exports = { getTestByName };
+const getAllTests = async () => {
+  try {
+    // Fetch all tests, selecting only the fields needed for the selection page
+    const tests = await Test.find({}, 'name code description isActive');
+    return tests;
+  } catch (error) {
+    console.error("Error fetching all tests:", error);
+    throw error;
+  }
+}
+
+module.exports = { getTestByCode, getAllTests };
