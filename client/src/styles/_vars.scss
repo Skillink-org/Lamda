@@ -27,10 +27,16 @@ $gray-700: #404040;
 $gray-800: #262626;
 $gray-900: #171717;
 
+// ======== Text colors ========
+$text-color: $gray-800;
+$text-muted: $gray-500;
+$text-light: $gray-400;
+
 // ======== modes colors ========
 $success: #22c55e;
 $warning: #f59e0b;
 $danger: #ef4444;
+$error-color: $danger;
 $info: #3b82f6;
 
 // ======== fonts ========
@@ -62,6 +68,7 @@ $line-height-loose: 2;
 
 // ======== border radius ========
 $border-radius-sm: 0.125rem;  // 2px
+$border-radius: 0.25rem;      // 4px - default
 $border-radius-md: 0.25rem;   // 4px
 $border-radius-lg: 0.5rem;    // 8px
 $border-radius-xl: 0.75rem;   // 12px
@@ -76,6 +83,7 @@ $shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 
 
 // ======== transitions ========
 $transition-fast: 0.15s ease;
+$transition: 0.3s ease;          // default
 $transition-normal: 0.3s ease;
 $transition-slow: 0.5s ease;
 
